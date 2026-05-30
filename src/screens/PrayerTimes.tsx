@@ -1,0 +1,108 @@
+import { useEffect, useState } from 'react';
+import { PrayerInfo } from '../utils/prayerTimes';
+
+function toEasternArabic(n: number): string {
+  const d = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return String(n)
+    .split('')
+    .map((c) => d[parseInt(c)])
+    .join('');
+}
+
+function formatTime12(d: Date): string {
+  const h = d.getHours();
+  const m = d.getMinutes();
+  const ampm = h >= 12 ? 'م' : 'ص';
+  const h12 = h % 12 || 12;
+  return `${toEasternArabic(h12)}:${toEasternArabic(m)} ${ampm}`;
+}
+
+function minutesUntil(target: Date): string {
+  const diff = target.getTime() - Date.now();
+  if (diff <= 0) return '';
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  if (h > 0) return `بعد ${toEasternArabic(h)} س و ${toEasternArabic(m)} د`;
+  return `بعد ${toEasternArabic(m)} د`;
+}
+
+const DOW = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+const MONTHS = [
+  'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+  'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
+];
+
+interface Props {
+  prayers: PrayerInfo[];
+}
+
+export default function PrayerTimes({ prayers }: Props) {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const dt = new Date(now);
+  const h = dt.getHours();
+  const m = dt.getMinutes();
+  const ampm = h >= 12 ? 'م' : 'ص';
+  const h12 = h % 12 || 12;
+  const timeStr = `${toEasternArabic(h12)}:${toEasternArabic(m)}`;
+  const dateStr = `${DOW[dt.getDay()]}، ${dt.getDate()} ${MONTHS[dt.getMonth()]}`;
+
+  // determine current & next
+  let currentIdx = -1;
+  for (let i = 0; i < prayers.length; i++) {
+    if (prayers[i].time.getTime() <= now) currentIdx = i;
+  }
+  const nextIdx = currentIdx + 1 < prayers.length ? currentIdx + 1 : 0;
+  const isNextToday = nextIdx !== 0;
+  const nextPrayer = prayers[isNextToday ? nextIdx : 0];
+
+  return (
+    <div className="prayer-container">
+      <div className="prayer-header">
+        <div className="prayer-current-time">{timeStr}</div>
+        <div className="prayer-ampm">{ampm}</div>
+      </div>
+      <div className="prayer-date">{dateStr}</div>
+
+      {/* Next prayer card */}
+      <div className="prayer-next-card">
+        <div className="prayer-next-label">
+          {isNextToday ? 'الصلاة القادمة' : 'الصلاة القادمة — غداً'}
+        </div>
+        <div className="prayer-next-content">
+          <span className="prayer-next-name">{nextPrayer.nameAr}</span>
+          <span className="prayer-next-time">{formatTime12(nextPrayer.time)}</span>
+        </div>
+        <div className="prayer-next-remaining">{minutesUntil(nextPrayer.time)}</div>
+      </div>
+
+      {/* Prayer list */}
+      <div className="prayer-list">
+        {prayers.map((p, i) => {
+          const isPast = p.time.getTime() < now - 300000;
+          const isCurrent = i === currentIdx;
+          let cls = 'prayer-row';
+          if (isPast) cls += ' past';
+          if (isCurrent) cls += ' active';
+          return (
+            <div key={p.key} className={cls}>
+              <span className="prayer-row-name">{p.nameAr}</span>
+              <span className={`prayer-row-time${isCurrent ? ' glow' : ''}`}>
+                {formatTime12(p.time)}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="prayer-footer">
+        ﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾
+      </div>
+    </div>
+  );
+}

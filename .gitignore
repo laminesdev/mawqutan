@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-electron/
+*.zip
+*.log
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.env
+.env.local
+out/
+release/
+
+# Electron build artifacts
+node_modules/electron/dist/

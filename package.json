@@ -1,0 +1,26 @@
+{
+  "name": "mawqutan",
+  "version": "1.0.0",
+  "description": "مَوْقُوتًا — Prayer at its appointed time",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.electron.json",
+    "start": "electron . --no-sandbox",
+    "dev": "MAWQUTAN_DEV=true vite & vite build && tsc -p tsconfig.electron.json && MAWQUTAN_DEV=true electron . --no-sandbox",
+    "pack": "electron-builder --linux AppImage"
+  },
+  "dependencies": {
+    "adhan": "^4.4.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "electron": "^31.0.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0"
+  }
+}

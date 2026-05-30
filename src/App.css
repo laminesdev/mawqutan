@@ -1,0 +1,549 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #0a0e27;
+  color: #e8e0d0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+/* ============ TITLE BAR ============ */
+
+.title-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px;
+  -webkit-app-region: drag;
+  z-index: 100;
+}
+
+.title-bar-buttons {
+  -webkit-app-region: no-drag;
+  display: flex;
+  gap: 6px;
+}
+
+.title-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.15s;
+  font-size: 0;
+}
+
+.title-btn:hover {
+  filter: brightness(1.3);
+}
+
+.title-btn.close {
+  background: #ff5f57;
+}
+
+.title-btn.minimize {
+  background: #febc2e;
+}
+
+/* ============ REGION SELECT ============ */
+
+.region-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0e27;
+  position: relative;
+  overflow: hidden;
+}
+
+.region-bg {
+  position: absolute;
+  inset: -50%;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(212, 168, 67, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(26, 10, 46, 0.3) 0%, transparent 50%);
+  animation: bgShift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes bgShift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-2%, -1%) scale(1.03);
+  }
+}
+
+.region-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  max-width: 360px;
+  width: 100%;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.region-title {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #e8e0d0;
+  margin: 0;
+  text-shadow: 0 0 40px rgba(212, 168, 67, 0.15);
+}
+
+.region-subtitle {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1rem;
+  color: #8b83a0;
+  margin: 0.25rem 0 2rem;
+}
+
+.region-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.region-mode-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.region-toggle-btn {
+  background: rgba(232, 224, 208, 0.05);
+  border: 1px solid rgba(232, 224, 208, 0.1);
+  color: #8b83a0;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  font-family: 'Noto Naskh Arabic', serif;
+  flex: 1;
+}
+
+.region-toggle-btn.active {
+  background: rgba(212, 168, 67, 0.12);
+  border-color: rgba(212, 168, 67, 0.3);
+  color: #d4a843;
+}
+
+.region-select {
+  background: rgba(232, 224, 208, 0.05);
+  border: 1px solid rgba(232, 224, 208, 0.1);
+  color: #e8e0d0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  width: 100%;
+  font-family: 'Noto Naskh Arabic', serif;
+  appearance: none;
+  cursor: pointer;
+  text-align: right;
+  direction: rtl;
+}
+
+.region-select option {
+  background: #111533;
+  color: #e8e0d0;
+}
+
+.region-coords {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.region-input {
+  flex: 1;
+  background: rgba(232, 224, 208, 0.05);
+  border: 1px solid rgba(232, 224, 208, 0.1);
+  color: #e8e0d0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  width: 100%;
+  direction: ltr;
+  text-align: left;
+}
+
+.region-input::placeholder {
+  color: #5a5470;
+}
+
+.region-input:focus,
+.region-select:focus {
+  outline: none;
+  border-color: rgba(212, 168, 67, 0.4);
+}
+
+.region-start-btn {
+  background: linear-gradient(135deg, #d4a843, #c49430);
+  color: #0a0e27;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  font-family: 'Noto Naskh Arabic', serif;
+}
+
+.region-start-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(212, 168, 67, 0.3);
+}
+
+.region-verse {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 0.75rem;
+  color: #3a3450;
+  margin-top: 2rem;
+  direction: rtl;
+}
+
+/* ============ PRAYER TIMES ============ */
+
+.prayer-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: #0a0e27;
+  overflow-y: auto;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.prayer-header {
+  text-align: center;
+  margin-bottom: 0.25rem;
+  margin-top: 1rem;
+}
+
+.prayer-current-time {
+  font-size: 4rem;
+  font-weight: 600;
+  color: #e8e0d0;
+  font-family: 'Noto Naskh Arabic', 'Inter', system-ui;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.prayer-ampm {
+  font-size: 0.9rem;
+  color: #8b83a0;
+  margin-top: 0.25rem;
+}
+
+.prayer-date {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 0.95rem;
+  color: #6b6580;
+  margin-bottom: 1.5rem;
+}
+
+.prayer-next-card {
+  background: rgba(212, 168, 67, 0.06);
+  border: 1px solid rgba(212, 168, 67, 0.15);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.5s ease;
+}
+
+.prayer-next-label {
+  font-size: 0.75rem;
+  color: #8b83a0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.prayer-next-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.prayer-next-name {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #d4a843;
+}
+
+.prayer-next-time {
+  font-size: 1.2rem;
+  color: #e8e0d0;
+}
+
+.prayer-next-remaining {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 0.85rem;
+  color: #8b83a0;
+  margin-top: 0.3rem;
+}
+
+.prayer-list {
+  width: 100%;
+  max-width: 320px;
+}
+
+.prayer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(232, 224, 208, 0.05);
+  transition: all 0.3s ease;
+}
+
+.prayer-row.past {
+  opacity: 0.3;
+}
+
+.prayer-row.active {
+  background: rgba(212, 168, 67, 0.08);
+  border-radius: 8px;
+  border-bottom-color: transparent;
+  margin: 0.2rem 0;
+}
+
+.prayer-row-name {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.15rem;
+  color: #e8e0d0;
+}
+
+.prayer-row-time {
+  font-size: 1rem;
+  color: #b0a8c0;
+  letter-spacing: 0.05em;
+}
+
+.prayer-row-time.glow {
+  color: #d4a843;
+  text-shadow: 0 0 20px rgba(212, 168, 67, 0.3);
+}
+
+.prayer-footer {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 0.8rem;
+  color: #3a3450;
+  text-align: center;
+  margin-top: auto;
+  padding: 1.5rem 0 0.5rem;
+  direction: rtl;
+  line-height: 1.6;
+}
+
+/* ============ TIMER ============ */
+
+.timer-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0e27;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.timer-container.visible {
+  opacity: 1;
+}
+
+.timer-bg {
+  position: absolute;
+  inset: -100%;
+  pointer-events: none;
+  animation: timerBgShift 10s ease-in-out infinite alternate;
+}
+
+@keyframes timerBgShift {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.05) rotate(2deg); }
+}
+
+.timer-particle {
+  position: absolute;
+  background: rgba(212, 168, 67, 0.25);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-80px) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.timer-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+}
+
+.timer-container.visible .timer-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timer-prayer-name {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #e8e0d0;
+  margin: 0;
+  text-shadow: 0 0 30px rgba(212, 168, 67, 0.2);
+}
+
+.timer-ornament {
+  color: #d4a843;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 1.5rem;
+  opacity: 0.5;
+  animation: ornamentPulse 2s ease-in-out infinite;
+}
+
+@keyframes ornamentPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.timer-circle {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+}
+
+.timer-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.timer-circle-progress {
+  transition: stroke-dashoffset 0.3s linear;
+  filter: drop-shadow(0 0 8px rgba(212, 168, 67, 0.4));
+}
+
+.timer-digits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Naskh Arabic', 'Inter', system-ui;
+  font-size: 4.5rem;
+  font-weight: 600;
+  color: #e8e0d0;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 40px rgba(212, 168, 67, 0.2);
+}
+
+.timer-subtitle {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.1rem;
+  color: #8b83a0;
+  margin-top: 1rem;
+}
+
+.timer-verse {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 0.8rem;
+  color: #3a3450;
+  margin-top: 0.75rem;
+  direction: rtl;
+  line-height: 1.6;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============ SCROLLBAR ============ */
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 224, 208, 0.08);
+  border-radius: 2px;
+}
