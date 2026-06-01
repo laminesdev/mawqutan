@@ -1,6 +1,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+declare global {
+  interface Window {
+    electronAPI?: {
+      minimize: () => void;
+      close: () => void;
+      quit: () => void;
+      setTimerActive: (active: boolean) => void;
+      playAdhan: () => void;
+      setAutoStart: (enabled: boolean) => void;
+      getAutoStart: () => Promise<boolean>;
+    };
+  }
+}
+
 export interface RegionConfig {
   cityName: string;
   latitude: number;
@@ -44,16 +58,22 @@ export const useStore = create<AppState>()(
       region: null,
       setRegion: (r) => set({ region: r }),
       timer: { ...defaultTimer },
-      activateTimer: (name, nameAr) =>
-        set({
+      activateTimer: (name, nameAr) => {
+        window.electronAPI?.setTimerActive(true);
+        window.electronAPI?.playAdhan();
+        return set({
           timer: {
             active: true,
             prayerName: name,
             prayerNameAr: nameAr,
             endAt: Date.now() + 300000,
           },
-        }),
-      deactivateTimer: () => set({ timer: { ...defaultTimer } }),
+        });
+      },
+      deactivateTimer: () => {
+        window.electronAPI?.setTimerActive(false);
+        return set({ timer: { ...defaultTimer } });
+      },
     }),
     {
       name: 'mawqutan-settings',
