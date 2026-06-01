@@ -316,7 +316,7 @@ body {
 .region-verse {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 0.75rem;
-  color: #3a3450;
+  color: #6b6380;
   margin-top: 2rem;
   direction: rtl;
 }
@@ -497,7 +497,7 @@ body {
 .prayer-footer {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 0.8rem;
-  color: #3a3450;
+  color: #6b6380;
   text-align: center;
   margin-top: auto;
   padding: 1.5rem 0 0.5rem;
@@ -640,7 +640,7 @@ body {
 .timer-verse {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 0.8rem;
-  color: #3a3450;
+  color: #6b6380;
   margin-top: 0.75rem;
   direction: rtl;
   line-height: 1.6;
