@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Coordinates, PrayerTimes } from 'adhan';
 import { useStore } from './stores/useStore';
-import { getCalcMethod, PRAYER_ORDER, PRAYER_NAMES_AR, PrayerInfo, CALC_METHOD_NAMES } from './utils/prayerTimes';
+import { getCalcMethod, PRAYER_ORDER, PRAYER_NAMES_AR, CALC_METHOD_NAMES } from './utils/prayerTimes';
+import type { PrayerInfo } from './types';
 import RegionSelect from './screens/RegionSelect';
 import PrayerTimesScreen from './screens/PrayerTimes';
 import TimerScreen from './screens/Timer';

@@ -1,33 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-declare global {
-  interface Window {
-    electronAPI?: {
-      minimize: () => void;
-      close: () => void;
-      quit: () => void;
-      setTimerActive: (active: boolean) => void;
-      playAdhan: () => void;
-      setAutoStart: (enabled: boolean) => void;
-      getAutoStart: () => Promise<boolean>;
-    };
-  }
-}
-
-export interface RegionConfig {
-  cityName: string;
-  latitude: number;
-  longitude: number;
-  calculationMethod: string;
-}
-
-export interface TimerState {
-  active: boolean;
-  prayerName: string;
-  prayerNameAr: string;
-  endAt: number;
-}
+import type { RegionConfig, TimerState } from '../types';
+import '../types/electron';
 
 interface AppState {
   region: RegionConfig | null;

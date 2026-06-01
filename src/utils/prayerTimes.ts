@@ -1,6 +1,5 @@
 import { PrayerTimes, Coordinates, CalculationMethod, CalculationParameters } from 'adhan';
-
-export type PrayerKey = 'Fajr' | 'Dhuhr' | 'Asr' | 'Maghrib' | 'Isha';
+import type { PrayerKey } from '../types';
 
 export const PRAYER_ORDER: PrayerKey[] = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
@@ -30,10 +29,4 @@ export const CALC_METHOD_NAMES: Record<string, string> = {
 
 export function getCalcMethod(key: string): CalculationParameters {
   return CALC_METHODS[key] || CalculationMethod.MuslimWorldLeague();
-}
-
-export interface PrayerInfo {
-  key: PrayerKey;
-  nameAr: string;
-  time: Date;
 }

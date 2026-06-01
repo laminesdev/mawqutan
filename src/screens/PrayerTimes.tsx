@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PrayerInfo } from '../utils/prayerTimes';
+import type { PrayerInfo } from '../types';
 import { getHijriDate } from '../utils/hijri';
 import { useStore } from '../stores/useStore';
 
