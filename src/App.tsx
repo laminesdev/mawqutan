@@ -11,6 +11,12 @@ declare global {
   interface Window {
     electronAPI?: {
       minimize: () => void;
+      close: () => void;
+      quit: () => void;
+      setTimerActive: (active: boolean) => void;
+      playAdhan: () => void;
+      setAutoStart: (enabled: boolean) => void;
+      getAutoStart: () => Promise<boolean>;
     };
   }
 }
@@ -22,7 +28,7 @@ function TitleBar() {
     <div className="title-bar">
       <div className="title-bar-buttons">
         <button className="title-btn minimize" title="تصغير" onClick={() => window.electronAPI?.minimize()} />
-        <button className="title-btn close" title="إغلاق" onClick={() => window.close()} />
+        <button className="title-btn close" title="إغلاق" onClick={() => window.electronAPI?.close()} />
       </div>
     </div>
   );

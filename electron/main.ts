@@ -1,8 +1,15 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } from 'electron';
 import * as path from 'path';
 
+let win: BrowserWindow | null = null;
+let tray: Tray | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _app = app as any;
+_app.isQuitting = false;
+
 function createWindow() {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 480,
     height: 700,
     minWidth: 380,
@@ -18,7 +25,7 @@ function createWindow() {
     show: false,
   });
 
-  win.once('ready-to-show', () => win.show());
+  win.once('ready-to-show', () => win?.show());
 
   const isDev = process.env.MAWQUTAN_DEV === 'true';
 
@@ -28,16 +35,98 @@ function createWindow() {
   } else {
     win.loadFile(path.join(__dirname, '../dist/index.html'));
   }
+
+  // Close button → hide to tray instead of quitting
+  win.on('close', (event) => {
+    if (!_app.isQuitting) {
+      event.preventDefault();
+      win?.hide();
+    }
+  });
 }
 
+function createTray() {
+  const iconPath = path.join(__dirname, '../assets/tray-icon.png');
+  const icon = nativeImage.createFromPath(iconPath);
+  tray = new Tray(icon);
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'إظهار / Show',
+      click: () => {
+        win?.show();
+        win?.focus();
+      },
+    },
+    {
+      label: 'تصغير / Hide',
+      click: () => win?.hide(),
+    },
+    { type: 'separator' },
+    {
+      label: 'خروج / Quit',
+      click: () => {
+        _app.isQuitting = true;
+        app.quit();
+      },
+    },
+  ]);
+
+  tray.setToolTip('مَوْقُوتًا — Mawqūtan');
+  tray.setContextMenu(contextMenu);
+
+  tray.on('double-click', () => {
+    win?.show();
+    win?.focus();
+  });
+}
+
+// IPC handlers
 ipcMain.on('minimize-window', (event) => {
-  BrowserWindow.fromWebContents(event.sender)?.minimize();
+  const bw = BrowserWindow.fromWebContents(event.sender);
+  bw?.hide();
 });
 
-app.whenReady().then(createWindow);
+ipcMain.on('close-window', (event) => {
+  const bw = BrowserWindow.fromWebContents(event.sender);
+  bw?.hide();
+});
 
-app.on('window-all-closed', () => app.quit());
+ipcMain.on('quit-app', () => {
+  _app.isQuitting = true;
+  app.quit();
+});
+
+let isTimerActive = false;
+
+ipcMain.on('set-timer-active', (_event, active: boolean) => {
+  isTimerActive = active;
+  if (active && win) {
+    win.show();
+    win.focus();
+    win.setAlwaysOnTop(true, 'screen-saver');
+  } else if (!active && win) {
+    win.setAlwaysOnTop(false);
+  }
+});
+
+app.whenReady().then(() => {
+  createTray();
+  createWindow();
+});
+
+app.on('window-all-closed', () => {
+  // Don't quit — tray keeps running
+});
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  win?.show();
+});
+
+// Prevent quit during active timer
+app.on('before-quit', (event) => {
+  if (isTimerActive) {
+    event.preventDefault();
+  }
 });
