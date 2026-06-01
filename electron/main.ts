@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, Notification } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, Notification, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import { exec } from 'child_process';
@@ -157,19 +157,59 @@ ipcMain.on(IPC.QUIT, () => {
 ipcMain.on(IPC.SET_TIMER_ACTIVE, (_event, active: boolean) => {
   isTimerActive = active;
   if (active && win) {
-    // Save current bounds before going fullscreen
     prevBounds = win.getBounds();
     win.show();
     win.focus();
+    // Layer 1: Fullscreen takeover
     win.setFullScreen(true);
+    win.setKiosk(true);
     win.setResizable(false);
     win.setMovable(false);
     win.setAlwaysOnTop(true, 'screen-saver');
+
+    // Layer 2: Global shortcut block (works on X11, best-effort on Wayland)
+    try {
+      const keys = ['Escape', 'F11', 'Alt+Tab', 'Alt+Escape', 'Super', 'Super+Tab', 'Super+Escape', 'Alt+F2', 'Alt+Space'];
+      keys.forEach((key) => {
+        globalShortcut.register(key, () => {});
+      });
+    } catch {
+      // globalShortcut unavailable on Wayland — non-critical
+    }
+
+    // Layer 3: Inject keyboard trap into renderer
+    win.webContents.executeJavaScript(`
+      (function() {
+        if (window.__timerInputBlocked) return;
+        window.__timerInputBlocked = true;
+        window.__timerBlockKeys = function(e) {
+          const blocked = ['Escape', 'F11', 'F1', 'Tab', 'Meta', 'Alt'];
+          if (blocked.includes(e.key) || e.altKey || e.metaKey || e.ctrlKey) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }
+        };
+        document.addEventListener('keydown', window.__timerBlockKeys, true);
+      })();
+    `, false);
   } else if (!active && win) {
+    // Remove all layers
+    win.setKiosk(false);
     win.setFullScreen(false);
     win.setResizable(true);
     win.setMovable(true);
     win.setAlwaysOnTop(false);
+    globalShortcut.unregisterAll();
+
+    // Remove keyboard trap from renderer
+    win.webContents.executeJavaScript(`
+      if (window.__timerBlockKeys) {
+        document.removeEventListener('keydown', window.__timerBlockKeys, true);
+        window.__timerBlockKeys = null;
+      }
+      window.__timerInputBlocked = false;
+    `, false);
   }
 });
 

@@ -22,6 +22,26 @@ export default function Timer() {
     requestAnimationFrame(() => setVisible(true));
   }, []);
 
+  // Layer 4: Renderer-side input trap — blocks keyboard/mouse inside the app
+  useEffect(() => {
+    const trapKey = (e: KeyboardEvent) => {
+      const blocked = ['Escape', 'F11', 'F1', 'Tab', 'Meta', 'Alt'];
+      if (blocked.includes(e.key) || e.altKey || e.metaKey || e.ctrlKey) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    const trapContext = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener('keydown', trapKey, true);
+    document.addEventListener('contextmenu', trapContext, true);
+    return () => {
+      document.removeEventListener('keydown', trapKey, true);
+      document.removeEventListener('contextmenu', trapContext, true);
+    };
+  }, []);
+
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 200);
     return () => clearInterval(id);
