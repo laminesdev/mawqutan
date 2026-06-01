@@ -229,9 +229,40 @@ body {
   direction: rtl;
 }
 
+.region-select[size] {
+  appearance: auto;
+  padding: 0.4rem 0.5rem;
+  min-height: 12rem;
+}
+
 .region-select option {
   background: #111533;
   color: #e8e0d0;
+  padding: 0.3rem 0.5rem;
+}
+
+.region-search {
+  background: rgba(232, 224, 208, 0.05);
+  border: 1px solid rgba(232, 224, 208, 0.1);
+  color: #e8e0d0;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 100%;
+  font-family: 'Noto Naskh Arabic', serif;
+  text-align: right;
+  direction: rtl;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.region-search:focus {
+  outline: none;
+  border-color: rgba(212, 168, 67, 0.4);
+}
+
+.region-search::placeholder {
+  color: #5a5470;
 }
 
 .region-coords {
