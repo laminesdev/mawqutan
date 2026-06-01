@@ -373,29 +373,30 @@ body {
 .prayer-settings:hover { color: #d4a843; }
 
 .prayer-autostart {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
   cursor: pointer;
-  opacity: 0.35;
+  opacity: 0.5;
   transition: opacity 0.2s;
 }
-
-.prayer-autostart:hover {
-  opacity: 0.8;
+.prayer-autostart:hover { opacity: 0.9; }
+.autostart-label {
+  font-size: 0.8rem;
+  color: #8b83a0;
+  font-family: 'Noto Naskh Arabic', serif;
 }
-
 .autostart-toggle {
   display: inline-block;
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: rgba(232, 224, 208, 0.15);
-  border: 1px solid rgba(232, 224, 208, 0.1);
-  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  border: 1px solid rgba(232, 224, 208, 0.2);
+  background: rgba(232, 224, 208, 0.08);
+  transition: all 0.2s;
 }
-
 .autostart-toggle.on {
   background: #d4a843;
   border-color: #d4a843;

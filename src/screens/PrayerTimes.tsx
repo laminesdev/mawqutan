@@ -91,12 +91,13 @@ export default function PrayerTimes({ prayers }: Props) {
         </button>
         <div className="prayer-current-time">{timeStr}</div>
         <div className="prayer-ampm">{ampm}</div>
-        <div className="prayer-autostart" onClick={toggleAutoStart} title="تشغيل عند بدء النظام">
-          <span className={`autostart-toggle ${autoStart ? 'on' : ''}`} />
-        </div>
       </div>
       <div className="prayer-date">{dateStr}</div>
       <div className="prayer-hijri">{hijriStr}</div>
+      <div className="prayer-autostart" onClick={toggleAutoStart} title="تشغيل عند بدء النظام">
+        <span className="autostart-label">بدء تلقائي</span>
+        <span className={`autostart-toggle ${autoStart ? 'on' : ''}`} />
+      </div>
 
       {/* Next prayer card */}
       <div className="prayer-next-card">
