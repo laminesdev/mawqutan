@@ -112,7 +112,7 @@ body {
 }
 
 *:focus-visible {
-  outline: 2px solid #d4a843;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -256,7 +256,7 @@ body {
 .region-toggle-btn.active {
   background: rgba(212, 168, 67, 0.12);
   border-color: rgba(212, 168, 67, 0.3);
-  color: #d4a843;
+  color: var(--color-accent);
 }
 
 .region-select {
@@ -417,7 +417,7 @@ body {
   border-radius: 4px;
   transition: color 0.15s;
 }
-.prayer-settings:hover { color: #d4a843; }
+.prayer-settings:hover { color: var(--color-accent); }
 
 .prayer-autostart {
   display: flex;
@@ -445,8 +445,8 @@ body {
   transition: all 0.2s;
 }
 .autostart-toggle.on {
-  background: #d4a843;
-  border-color: #d4a843;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   box-shadow: 0 0 8px rgba(212, 168, 67, 0.4);
 }
 
@@ -511,7 +511,7 @@ body {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #d4a843;
+  color: var(--color-accent);
 }
 
 .prayer-next-time {
@@ -564,7 +564,7 @@ body {
 }
 
 .prayer-row-time.glow {
-  color: #d4a843;
+  color: var(--color-accent);
   text-shadow: 0 0 20px rgba(212, 168, 67, 0.3);
 }
 
@@ -659,7 +659,7 @@ body {
 }
 
 .timer-ornament {
-  color: #d4a843;
+  color: var(--color-accent);
   font-size: 0.9rem;
   margin: 0.5rem 0 1.5rem;
   opacity: 0.5;
