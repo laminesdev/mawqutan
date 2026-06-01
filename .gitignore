@@ -14,5 +14,8 @@ release/
 
 # Electron build artifacts
 node_modules/electron/dist/
-release/
-out/
+
+# Hermes agent artifacts
+.hermes/
+docs/
+package-lock.json

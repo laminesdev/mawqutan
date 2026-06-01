@@ -1,132 +1,256 @@
-# مَوْقُوتًا / Mawqūtan
+<p align="center">
+  <img src="assets/tray-icon.png" width="72" alt="Mawqutan icon" />
+</p>
 
-> إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا
->
-> **(النساء 4:103)**
+<h1 align="center">مَوْقُوتًا / Mawqūtan</h1>
 
-A desktop app that sits on your screen and shows the five prayer times.
-When it's time to pray, the screen changes — a 5-minute timer appears with
-a golden circle that drains as seconds pass. No notifications, no noise.
-Just the app doing what it's supposed to do.
+<p align="center">
+  <em>Prayer at its appointed time — desktop prayer timer</em><br />
+  <em>الصلاة على وقتها — تطبيق سطح مكتب لمؤقت الصلاة</em>
+</p>
 
-Built because most prayer apps are either web wrappers stuffed with ads,
-or they try to do everything (Qibla, tasbih, Quran, weather, news).
-This one only does the one thing it was made for.
+<p align="center">
+  ﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾<br />
+  <strong>النساء 4:103</strong>
+</p>
 
----
-
-## Screens
-
-**1. Region select** — pick your city from a list (19 cities so far, mostly
-Algeria + Makkah/Madinah/Cairo/Dubai) or type coordinates. Choose your
-calculation method: MWL, ISNA, Egyptian, Umm Al-Qura, or Karachi.
-
-**2. Prayer times** — shows today's five prayers in Eastern Arabic numerals
-(٤:٤٩ instead of 4:49). The current prayer is highlighted, the next one
-has a countdown. The verse from An-Nisa sits at the bottom.
-
-**3. Timer** — at prayer time, the app switches to a full-screen timer.
-5 minutes. Golden SVG circle that drains as time passes. Background color
-shifts depending on the prayer (deep blue for Fajr, sunset red for Maghrib).
-Floating particles. When the circle empties, it fades back to the prayer screen.
+<p align="center">
+  <img src="https://img.shields.io/badge/Electron-31-blue?logo=electron" alt="Electron" />
+  <img src="https://img.shields.io/badge/React-18-61dafb?logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript" alt="TypeScript strict" />
+  <img src="https://img.shields.io/badge/Vite-5-646cff?logo=vite" alt="Vite" />
+  <img src="https://img.shields.io/badge/Tailwind-3-06b6d4?logo=tailwindcss" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/Zustand-4-orange" alt="Zustand" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" />
+</p>
 
 ---
 
-## Stack
+## 📖 Overview / نبذة
 
-| Thing | What |
-|-------|------|
-| Runtime | Electron |
-| UI | React 18 + TypeScript |
-| Bundler | Vite |
-| State | Zustand (persisted to localStorage) |
-| Prayer calc | adhan v4 |
-| Fonts | Noto Naskh Arabic + Inter |
-| Window | Frameless, 480×700, dark |
+**English** — A desktop app that sits on your screen and shows the five prayer times. When it's time to pray, a 5-minute timer appears with a golden circle that drains as seconds pass. Built because most prayer apps are web wrappers stuffed with ads or try to do everything at once. This one does one thing.
 
-## Project structure
+**العربية** — تطبيق سطح مكتب يعرض أوقات الصلاة الخمس. عندما يحين وقت الصلاة، يظهر مؤقت 5 دقائق بدائرة ذهبية تتناقص كلما مرت الثواني. بُني لأن معظم تطبيقات الصلاة إما أغلفة ويب مليئة بالإعلانات، أو تحاول فعل كل شيء في آن واحد. هذا التطبيق يفعل شيئًا واحدًا فقط.
+
+---
+
+## ✨ Features / المميزات
+
+| English | العربية |
+|---------|---------|
+| 🕌 58 Algerian wilayas + 20 international cities | 🕌 58 ولاية جزائرية + 20 مدينة دولية |
+| 🎯 Adhan audio plays at prayer time (ffplay/paplay/aplay) | 🎯 تشغيل صوت الأذان عند وقت الصلاة |
+| 🔔 OS-level notification when prayer starts | 🔔 إشعار نظام عند بدء الصلاة |
+| ⏱️ 5-minute animated timer with golden progress ring | ⏱️ مؤقت 5 دقائق متحرك بحلقة ذهبية |
+| 🌙 Hijri date displayed alongside Gregorian | 🌙 عرض التاريخ الهجري مع الميلادي |
+| 🌈 Prayer-specific ambient colors (Fajr blue, Maghrib red, etc.) | 🌈 ألوان محيطة خاصة بكل صلاة |
+| 🎨 Dark theme with warm gold accent | 🎨 ثيم داكن مع لمسات ذهبية دافئة |
+| 📐 Three calculation methods (MWL, ISNA, Egyptian, Umm Al-Qura, Karachi) | 📐 5 طرق حسابية لمواقيت الصلاة |
+| 🔄 Auto-start with system (optional) | 🔄 تشغيل تلقائي مع بدء النظام (اختياري) |
+| 🖥️ Frameless window, minimize to tray | 🖥️ نافذة بدون إطار، تصغير للـ tray |
+| ♿ Built with accessibility in mind | ♿ مدمجة مع دعم الوصولية |
+| 📦 Code-split chunks for fast loading | 📦 تقسيم الكود لتحميل سريع |
+
+---
+
+## 🖼️ Screens / الشاشات
+
+### 1. Region Select / اختيار المنطقة
+
+Pick your city from **78 cities** (58 Algerian wilayas + 20 international) or enter custom coordinates. Choose your calculation method. Bilingual interface.
+
+- Custom search + dropdown with keyboard navigation
+- Coordinates mode for non-listed locations
+- 5 calculation methods: MWL, ISNA, Egyptian, Umm Al-Qura, Karachi
+
+### 2. Prayer Times / أوقات الصلاة
+
+Today's five prayers in Eastern Arabic numerals (٤:٤٩ instead of 4:49). Current prayer highlighted, next prayer with countdown.
+
+- Live digital clock with AM/PM indicator
+- Hijri + Gregorian date display
+- Auto-start toggle
+- Settings button (return to region select)
+- Loading skeleton state while calculating
+
+### 3. Timer / المؤقت
+
+When it's prayer time, the app switches to a full-screen 5-minute timer.
+
+- Golden SVG circle that drains as time passes
+- Ambient colors shift by prayer (Fajr: deep blue, Dhuhr: warm gold, Asr: deep orange, Maghrib: sunset red, Isha: night indigo)
+- Floating particle animation
+- "Skip" button to dismiss early
+- Auto-dismiss when timer completes (600ms fade-out)
+
+---
+
+## 🛠️ Stack / التقنية
+
+| Layer | Technology | Why |
+|-------|-----------|-----|
+| **Runtime** | Electron 31 | Cross-platform desktop |
+| **UI** | React 18 + TypeScript (strict) | Type safety + component model |
+| **Bundler** | Vite 5 | Fast HMR + code splitting |
+| **Styling** | Tailwind CSS 3 | Utility-first, design tokens |
+| **State** | Zustand 4 + persist | Lightweight, localStorage |
+| **Prayer calc** | `adhan` v4 | Accurate astronomical calculations |
+| **Fonts** | Noto Naskh Arabic + Inter | Arabic + Latin pair |
+| **Build** | npm run build (vite + tsc) | One command |
+
+---
+
+## 📁 Project Structure / هيكل المشروع
 
 ```
 mawqutan/
 ├── electron/
-│   ├── main.ts          # Electron main process
-│   └── preload.ts       # Context bridge (minimize IPC)
+│   ├── main.ts              # Main process: window, tray, IPC, notifications, adhan
+│   ├── preload.ts           # Context bridge (secure IPC)
+│   └── ipc-channels.ts      # Shared IPC channel constants
 ├── src/
-│   ├── main.tsx         # React entry
-│   ├── App.tsx          # Root: routes between 3 screens, watches prayer times
-│   ├── App.css          # All styling (dark theme, animations)
+│   ├── main.tsx             # React entry point
+│   ├── App.tsx              # Root: Lazy-loads screens, error boundaries, toast
+│   ├── App.css              # (@font-face, CSS variables, keyframes, reset)
+│   ├── index.css            # Tailwind directives
+│   ├── components/
+│   │   ├── TitleBar.tsx        # Frameless drag bar + macOS traffic lights
+│   │   └── ErrorBoundary.tsx   # Per-screen error isolation
 │   ├── screens/
-│   │   ├── RegionSelect.tsx   # City / coordinates picker
-│   │   ├── PrayerTimes.tsx    # 5 prayers + countdown
-│   │   └── Timer.tsx          # 5-min animated countdown
+│   │   ├── RegionSelect.tsx    # City/coordinate picker (lazy-loaded)
+│   │   ├── PrayerTimes.tsx     # 5 prayers + countdown (lazy-loaded)
+│   │   └── Timer.tsx           # 5-min animated timer (lazy-loaded)
+│   ├── hooks/
+│   │   └── usePrayerMonitor.ts # Prayer time calculation + auto-trigger
 │   ├── stores/
-│   │   └── useStore.ts        # Zustand store
+│   │   └── useStore.ts         # Zustand store (region, timer, toast)
+│   ├── types/
+│   │   ├── electron.d.ts       # Global window.electronAPI declaration
+│   │   └── index.ts            # Shared type definitions
 │   └── utils/
-│       └── prayerTimes.ts     # adhan wrapper, calc methods
-├── dist/                # Vite build output
-├── dist-electron/       # Compiled Electron main
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-└── tsconfig.electron.json
+│       ├── formatters.ts       # toEasternArabic, formatTime12, etc.
+│       ├── hijri.ts            # Umm Al-Qura Hijri date conversion
+│       └── prayerTimes.ts      # Adhan wrapper, calc methods
+├── public/
+│   └── fonts/                  # Noto Naskh Arabic + Inter (Vite static)
+├── assets/                     # Tray icon, adhan.mp3
+├── dist/                       # Vite build output
+├── dist-electron/              # Compiled Electron main process
+├── tailwind.config.js          # Design tokens (colors, fonts, spacing, type scale)
+├── vite.config.ts              # React plugin + @/ alias + base: ./
+├── tsconfig.json               # Strict TypeScript + path aliases
+└── tsconfig.electron.json      # Electron main process compilation
 ```
 
 ---
 
-## Run it
+## 🎨 Design System / نظام التصميم
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `bg` | `#0a0e27` | Deep indigo background |
+| `surface` | `rgba(232,224,208,0.05)` | Card/input backgrounds |
+| `surface-raised` | `#111533` | Dropdown menus |
+| `accent` | `#d4a843` | Gold accent (buttons, highlights) |
+| `text-primary` | `#e8e0d0` | Primary text (warm) |
+| `text-secondary` | `#8b83a0` | Secondary text |
+| `text-verse` | `#6b6380` | Quran verse text (muted) |
+| `border` | `rgba(232,224,208,0.1)` | Subtle borders |
+| **Type scale** | `2xs` → `7xl` | 12 sizes from 10px to 72px |
+| **Spacing** | `0.5` → `16` | 8-step spacing scale |
+| **Radii** | `sm` → `2xl` | 4px to 22px |
+| **Fonts** | Inter + Noto Naskh Arabic | Latin + Arabic pairing |
+
+---
+
+## 🚀 Getting Started / التشغيل
+
+### Prerequisites / المتطلبات
+
+- **Node.js** ≥ 18
+- **npm** or **bun**
+- **ffplay** / **paplay** / **aplay** (for adhan audio — at least one)
+
+### Install / التثبيت
 
 ```bash
 git clone https://github.com/laminesdev/mawqutan
 cd mawqutan
-bun install
-
-# Build + launch
-bun run build
-bun run start
-
-# Or dev mode (with hot-reload Vite server)
-bun run dev
+npm install
 ```
 
-If `bun run start` gives you a sandbox error, add `--no-sandbox`:
+### Run (development) / التطوير
+
+```bash
+MAWQUTAN_DEV=true npm run dev
+```
+
+### Build + launch / البناء والتشغيل
+
+```bash
+npm run build
+npm run start
+```
+
+If you get a sandbox error:
+
 ```bash
 electron . --no-sandbox
 ```
 
----
+### Package for distribution / التوزيع
 
-## Why the name
-
-From Quran 4:103 — "كِتَابًا مَّوْقُوتًا" — prayer is a timed obligation.
-The name is the word itself in its Quranic form: Mawqūtan (مَوْقُوتًا).
-
----
-
-## What it doesn't do (and won't)
-
-- No notifications (planned, but not yet)
-- No adhan audio (planned)
-- No Qibla direction
-- No tasbih counter
-- No Quran reader
-- No weather
-- No social features
-- No cloud sync
-
-It's a timer for salah. That's it.
+```bash
+# Coming soon — electron-builder config
+```
 
 ---
 
-## What needs work
+## 📦 Build Output / مخرجات البناء
 
-- The prayer list only has 19 cities — add yours in `RegionSelect.tsx`
-- Currently shows Gregorian date in Arabic, not Hijri
-- Before Fajr, it says "غداً" (tomorrow) but Fajr is still today
-- No tray icon — closing the app quits it
-- Only tested on Linux (Arch-based)
-- The sandbox helper needs root permissions to run without `--no-sandbox`
-- No packaging script to generate .AppImage / .deb yet
+```
+dist/assets/
+├── index.html               0.40 kB
+├── index-*.css             21.49 kB (gzip: 5.19 kB)
+├── formatters-*.js          0.62 kB (gzip: 0.48 kB)  # Shared utils
+├── Timer-*.js               4.09 kB (gzip: 1.99 kB)  # Lazy-loaded
+├── PrayerTimes-*.js         6.01 kB (gzip: 2.62 kB)  # Lazy-loaded
+├── RegionSelect-*.js       10.76 kB (gzip: 4.44 kB)  # Lazy-loaded
+└── index-*.js             170.31 kB (gzip: 55.93 kB) # Core bundle
+```
 
 ---
 
-Built by [Lamine](https://github.com/laminesdev). Algeria, 2026.
+## 🌍 Cities / المدن
+
+**58 Algerian wilayas** (أدرار → المنيعة) + **20 international cities** (Makkah, Madinah, Cairo, Dubai, Amman, Riyadh, Casablanca, Tunis, Tripoli, Damascus, Baghdad, Jerusalem, Istanbul, Kuwait City, Muscat, Doha, Manama, Sanaa, Khartoum, Nouakchott).
+
+Add yours in `src/screens/RegionSelect.tsx`.
+
+---
+
+## 🤝 Contributing / المساهمة
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/amazing`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push (`git push origin feature/amazing`)
+5. Open a Pull Request
+
+**Code style:**
+- TypeScript strict mode
+- Tailwind CSS utility classes (no raw CSS for styling)
+- Arabic comments for UI logic, English comments for technical logic
+- One concept per commit
+
+---
+
+## 📄 License / الترخيص
+
+MIT © [Mohamed Amine Boughaba](https://github.com/laminesdev)
+
+---
+
+<p align="center">
+  <strong>مَوْقُوتًا</strong> — Algeria, 2026
+</p>
