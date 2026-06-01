@@ -58,8 +58,9 @@ export default function PrayerTimes({ prayers }: Props) {
     if (prayers[i].time.getTime() <= now) currentIdx = i;
   }
   const nextIdx = currentIdx + 1 < prayers.length ? currentIdx + 1 : 0;
-  const isNextToday = nextIdx !== 0;
-  const nextPrayer = prayers[isNextToday ? nextIdx : 0];
+  // next prayer is today IF no prayer has passed yet OR we haven't wrapped to next day's Fajr
+  const isNextToday = currentIdx === -1 || nextIdx !== 0;
+  const nextPrayer = prayers[nextIdx];
 
   return (
     <div className="prayer-container">
