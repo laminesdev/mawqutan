@@ -45,7 +45,9 @@ export function usePrayerMonitor() {
     if (prayers.length === 0) return;
 
     const check = () => {
-      if (timer.active) return;
+      const state = useStore.getState();
+      if (state.timer.active) return;
+      if (Date.now() < state.timer.cooldownUntil) return;
       const now = Date.now();
       for (const p of prayers) {
         const diff = now - p.time.getTime();

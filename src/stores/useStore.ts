@@ -20,6 +20,7 @@ const defaultTimer: TimerState = {
   prayerName: '',
   prayerNameAr: '',
   endAt: 0,
+  cooldownUntil: 0,
 };
 
 const defaultState = {
@@ -50,12 +51,18 @@ export const useStore = create<AppState>()(
             prayerName: name,
             prayerNameAr: nameAr,
             endAt: Date.now() + 300000,
+            cooldownUntil: 0,
           },
         });
       },
       deactivateTimer: () => {
         window.electronAPI?.setTimerActive(false);
-        return set({ timer: { ...defaultTimer } });
+        return set({
+          timer: {
+            ...defaultTimer,
+            cooldownUntil: Date.now() + 15000,
+          },
+        });
       },
       showSettings: false,
       setShowSettings: (v) => set({ showSettings: v }),

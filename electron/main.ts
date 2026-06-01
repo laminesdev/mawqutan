@@ -129,7 +129,11 @@ ipcMain.on(IPC.MINIMIZE, (event) => {
 });
 
 ipcMain.on(IPC.CLOSE, (event) => {
-  BrowserWindow.fromWebContents(event.sender)?.hide();
+  // During active timer, the window cannot be closed or hidden at all
+  // The user must wait for the timer to finish
+  if (!isTimerActive) {
+    BrowserWindow.fromWebContents(event.sender)?.hide();
+  }
 });
 
 ipcMain.on(IPC.QUIT, () => {

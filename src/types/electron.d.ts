@@ -1,4 +1,4 @@
-export interface ElectronAPI {
+interface ElectronAPI {
   minimize: () => void;
   close: () => void;
   quit: () => void;
@@ -9,8 +9,6 @@ export interface ElectronAPI {
   getAutoStart: () => Promise<boolean>;
 }
 
-declare global {
-  interface Window {
-    electronAPI?: ElectronAPI;
-  }
+interface Window {
+  electronAPI?: ElectronAPI;
 }

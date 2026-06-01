@@ -12,6 +12,7 @@ export interface TimerState {
   prayerName: string;
   prayerNameAr: string;
   endAt: number;
+  cooldownUntil: number;
 }
 
 export interface PrayerInfo {
