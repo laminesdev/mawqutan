@@ -242,7 +242,7 @@ body {
 
 .region-toggle-btn {
   background: rgba(232, 224, 208, 0.05);
-  border: 1px solid rgba(232, 224, 208, 0.1);
+  border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
   padding: 0.4rem 1rem;
   border-radius: 6px;
@@ -261,7 +261,7 @@ body {
 
 .region-select {
   background: rgba(232, 224, 208, 0.05);
-  border: 1px solid rgba(232, 224, 208, 0.1);
+  border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -288,7 +288,7 @@ body {
 
 .region-search {
   background: rgba(232, 224, 208, 0.05);
-  border: 1px solid rgba(232, 224, 208, 0.1);
+  border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 0.7rem 1rem;
   border-radius: 8px;
@@ -307,7 +307,7 @@ body {
 }
 
 .region-search::placeholder {
-  color: #7a7390;
+  color: var(--color-placeholder);
 }
 
 .region-coords {
@@ -318,7 +318,7 @@ body {
 .region-input {
   flex: 1;
   background: rgba(232, 224, 208, 0.05);
-  border: 1px solid rgba(232, 224, 208, 0.1);
+  border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -330,7 +330,7 @@ body {
 }
 
 .region-input::placeholder {
-  color: #7a7390;
+  color: var(--color-placeholder);
 }
 
 .region-input:focus,
