@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { RegionConfig, TimerState } from '../types';
-import '../types/electron';
 
 interface AppState {
   region: RegionConfig | null;

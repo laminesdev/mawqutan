@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { useStore } from '../stores/useStore';
 import { CALC_METHOD_NAMES } from '../utils/prayerTimes';
 
@@ -94,6 +94,8 @@ export default function RegionSelect() {
   const [customLat, setCustomLat] = useState('');
   const [customLng, setCustomLng] = useState('');
   const [method, setMethod] = useState('MWL');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return CITIES;
@@ -107,6 +109,19 @@ export default function RegionSelect() {
       if (idx !== -1) setSelectedIdx(String(idx));
     }
   }, [filtered, search]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const selectedCity = CITIES[parseInt(selectedIdx)];
 
   const handleStart = () => {
     if (starting) return;
@@ -124,7 +139,6 @@ export default function RegionSelect() {
     }
     if (isNaN(lat) || isNaN(lng)) return;
     setStarting(true);
-    // Slight delay for visual feedback
     setTimeout(() => {
       setRegion({ cityName: name, latitude: lat, longitude: lng, calculationMethod: method });
       setShowSettings(false);
@@ -132,24 +146,32 @@ export default function RegionSelect() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-bg relative overflow-hidden">
-      <div className="absolute inset-[-50%] pointer-events-none bg-[radial-gradient(ellipse_at_30%_20%,rgba(212,168,67,0.04)_0%,transparent_50%),radial-gradient(ellipse_at_70%_80%,rgba(26,10,46,0.3)_0%,transparent_50%)] animate-[bgShift_12s_ease-in-out_infinite_alternate]" />
+    <div className="h-screen flex items-center justify-center bg-bg relative overflow-hidden" role="main" aria-label="اختيار المنطقة">
+      <div className="absolute inset-[-50%] pointer-events-none bg-[radial-gradient(ellipse_at_30%_20%,rgba(212,168,67,0.04)_0%,transparent_50%),radial-gradient(ellipse_at_70%_80%,rgba(26,10,46,0.3)_0%,transparent_50%)] animate-[bgShift_12s_ease-in-out_infinite_alternate]" aria-hidden="true" />
       <div className="relative z-10 text-center p-8 max-[480px]:p-4 max-w-[360px] w-full animate-[fadeUp_0.8s_ease_forwards]">
-        <h1 className="font-arabic text-[3.5rem] max-[360px]:text-[2.5rem] font-bold text-text-primary m-0 [text-shadow:0_0_40px_rgba(212,168,67,0.15)]" dir="rtl">مَوْقُوتًا</h1>
+        <h1 className="font-arabic text-5xl max-[360px]:text-[2.5rem] font-bold text-text-primary m-0 [text-shadow:0_0_40px_rgba(212,168,67,0.15)]" dir="rtl">مَوْقُوتًا</h1>
         <p className="font-arabic text-base text-text-secondary mt-1 mb-8 mx-0" dir="rtl">الصلاة على وقتها</p>
 
         <div className="flex flex-col gap-3">
-          <div className="flex gap-2 justify-center">
+          <div className="flex gap-2 justify-center" role="tablist" aria-label="طريقة الاختيار">
             <button
-              className={`bg-surface border border-border text-text-secondary px-4 py-[0.4rem] rounded cursor-pointer text-[0.9rem] transition-all duration-200 font-arabic flex-1 ${mode === 'city' ? 'bg-[rgba(212,168,67,0.12)] border-[rgba(212,168,67,0.3)] text-accent' : ''}`}
+              className={`bg-surface border border-border text-text-secondary px-4 py-[0.4rem] rounded cursor-pointer text-sm transition-all duration-200 font-arabic flex-1 ${
+                mode === 'city' ? 'bg-accent/12 border-accent/30 text-accent' : ''
+              }`}
               onClick={() => setMode('city')}
+              role="tab"
+              aria-selected={mode === 'city'}
               dir="rtl"
             >
               مدينة
             </button>
             <button
-              className={`bg-surface border border-border text-text-secondary px-4 py-[0.4rem] rounded cursor-pointer text-[0.9rem] transition-all duration-200 font-arabic flex-1 ${mode === 'custom' ? 'bg-[rgba(212,168,67,0.12)] border-[rgba(212,168,67,0.3)] text-accent' : ''}`}
+              className={`bg-surface border border-border text-text-secondary px-4 py-[0.4rem] rounded cursor-pointer text-sm transition-all duration-200 font-arabic flex-1 ${
+                mode === 'custom' ? 'bg-accent/12 border-accent/30 text-accent' : ''
+              }`}
               onClick={() => setMode('custom')}
+              role="tab"
+              aria-selected={mode === 'custom'}
               dir="rtl"
             >
               إحداثيات
@@ -159,29 +181,76 @@ export default function RegionSelect() {
           {mode === 'city' ? (
             <>
               <input
-                className="bg-surface border border-border text-text-primary px-4 py-[0.7rem] rounded text-[0.9rem] w-full font-arabic text-right transition-[border-color] duration-150 box-border placeholder:text-placeholder focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
+                className="bg-surface border border-border text-text-primary px-4 py-[0.7rem] rounded text-sm w-full font-arabic text-right transition-[border-color] duration-150 box-border placeholder:text-placeholder focus:outline-none focus:border-accent/40"
                 placeholder="ابحث عن مدينة..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onFocus={() => setDropdownOpen(true)}
                 dir="rtl"
+                aria-label="ابحث عن مدينة"
+                aria-autocomplete="list"
+                role="combobox"
+                aria-expanded={dropdownOpen}
+                aria-controls="city-dropdown"
               />
-              <select
-                className="bg-surface border border-border text-text-primary appearance-auto py-[0.4rem] px-2 min-h-[12rem] rounded text-[0.95rem] w-full font-arabic cursor-pointer text-right focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
-                value={selectedIdx}
-                onChange={(e) => setSelectedIdx(e.target.value)}
-                size={Math.min(filtered.length, 8)}
-                dir="rtl"
-              >
-                {filtered.map((c, i) => {
-                  const realIdx = CITIES.indexOf(c);
-                  return (
-                    <option key={realIdx} value={realIdx}>
-                      {c.name}
-                    </option>
-                  );
-                })}
-              </select>
-              {search.trim() && (
+
+              {/* Custom dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  type="button"
+                  className="bg-surface border border-border text-text-primary w-full py-3 px-4 rounded text-sm font-arabic text-right cursor-pointer flex items-center justify-between focus:outline-none focus:border-accent/40 transition-colors duration-150"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  aria-haspopup="listbox"
+                  aria-expanded={dropdownOpen}
+                  aria-label="اختر مدينة"
+                  dir="rtl"
+                >
+                  <span>{selectedCity?.name || 'اختر مدينة'}</span>
+                  <svg className={`w-4 h-4 text-text-muted transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {dropdownOpen && (
+                  <div
+                    id="city-dropdown"
+                    className="absolute z-50 w-full mt-1 bg-surface-raised border border-border rounded shadow-lg max-h-[240px] overflow-y-auto"
+                    role="listbox"
+                    aria-label="قائمة المدن"
+                  >
+                    {filtered.length === 0 ? (
+                      <div className="px-4 py-3 text-sm text-text-muted font-arabic text-right" dir="rtl">لا توجد نتائج</div>
+                    ) : (
+                      filtered.map((c) => {
+                        const realIdx = CITIES.indexOf(c);
+                        const isSelected = selectedIdx === String(realIdx);
+                        return (
+                          <div
+                            key={realIdx}
+                            className={`px-4 py-2.5 text-sm font-arabic text-right cursor-pointer transition-colors duration-100 ${
+                              isSelected
+                                ? 'bg-accent/12 text-accent'
+                                : 'text-text-primary hover:bg-surface'
+                            }`}
+                            role="option"
+                            aria-selected={isSelected}
+                            onClick={() => {
+                              setSelectedIdx(String(realIdx));
+                              setDropdownOpen(false);
+                              setSearch('');
+                            }}
+                            dir="rtl"
+                          >
+                            {c.name}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {search.trim() && !dropdownOpen && (
                 <div className="text-xs text-text-verse text-right -mt-[0.3rem] pr-[0.3rem]" dir="rtl">
                   {filtered.length === 0 ? 'لا توجد نتائج' :
                     `${filtered.length} ${filtered.length === 1 ? 'مدينة' : 'مدن'}`}
@@ -191,35 +260,53 @@ export default function RegionSelect() {
           ) : (
             <div className="flex gap-2">
               <input
-                className="flex-1 bg-surface border border-border text-text-primary px-4 py-3 rounded text-[0.9rem] font-inter w-full text-left placeholder:text-placeholder focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
+                className="flex-1 bg-surface border border-border text-text-primary px-4 py-3 rounded text-sm font-inter w-full text-left placeholder:text-placeholder focus:outline-none focus:border-accent/40"
                 placeholder="خط العرض (Lat)"
                 value={customLat}
                 onChange={(e) => setCustomLat(e.target.value)}
                 type="number"
                 step="any"
                 dir="ltr"
+                aria-label="خط العرض"
               />
               <input
-                className="flex-1 bg-surface border border-border text-text-primary px-4 py-3 rounded text-[0.9rem] font-inter w-full text-left placeholder:text-placeholder focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
+                className="flex-1 bg-surface border border-border text-text-primary px-4 py-3 rounded text-sm font-inter w-full text-left placeholder:text-placeholder focus:outline-none focus:border-accent/40"
                 placeholder="خط الطول (Lng)"
                 value={customLng}
                 onChange={(e) => setCustomLng(e.target.value)}
                 type="number"
                 step="any"
                 dir="ltr"
+                aria-label="خط الطول"
               />
             </div>
           )}
 
-          <select className="bg-surface border border-border text-text-primary appearance-none py-3 px-4 rounded text-[0.95rem] w-full font-arabic cursor-pointer text-right focus:outline-none focus:border-[rgba(212,168,67,0.4)]" value={method} onChange={(e) => setMethod(e.target.value)} dir="rtl">
-            {Object.entries(CALC_METHOD_NAMES).map(([k, v]) => (
-              <option key={k} value={k}>
-                {v}
-              </option>
-            ))}
-          </select>
+          {/* Method selector — small enough to keep native for now, styled consistently */}
+          <div className="relative">
+            <select
+              className="bg-surface border border-border text-text-primary w-full py-3 px-4 rounded text-sm font-arabic text-right cursor-pointer appearance-none focus:outline-none focus:border-accent/40 transition-colors duration-150"
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              dir="rtl"
+              aria-label="طريقة الحساب"
+            >
+              {Object.entries(CALC_METHOD_NAMES).map(([k, v]) => (
+                <option key={k} value={k}>{v}</option>
+              ))}
+            </select>
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
 
-          <button className="bg-gradient-to-br from-accent to-accent-hover text-bg border-none px-8 py-3 rounded text-[1.1rem] font-semibold cursor-pointer transition-all duration-200 mt-2 font-arabic disabled:opacity-60 disabled:cursor-wait hover:-translate-y-px hover:shadow-[0_4px_20px_rgba(212,168,67,0.3)]" onClick={handleStart} disabled={starting} dir="rtl">
+          <button
+            className="bg-gradient-to-br from-accent to-accent-hover text-bg border-none px-8 py-3 rounded text-lg font-semibold cursor-pointer transition-all duration-200 mt-2 font-arabic disabled:opacity-60 disabled:cursor-wait hover:-translate-y-px hover:shadow-[0_4px_20px_rgba(212,168,67,0.3)]"
+            onClick={handleStart}
+            disabled={starting}
+            dir="rtl"
+            aria-label={starting ? 'جاري التحميل' : 'ابدأ'}
+          >
             {starting ? 'جاري…' : 'ابدأ'}
           </button>
         </div>

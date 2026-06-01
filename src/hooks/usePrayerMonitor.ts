@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Coordinates, PrayerTimes } from 'adhan';
 import { useStore } from '../stores/useStore';
 import { getCalcMethod, PRAYER_ORDER, PRAYER_NAMES_AR } from '../utils/prayerTimes';
@@ -10,8 +10,9 @@ export function usePrayerMonitor() {
   const activateTimer = useStore((s) => s.activateTimer);
   const showToast = useStore((s) => s.showToast);
   const dismissToast = useStore((s) => s.dismissToast);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // 1-minute tick for recalculating at midnight
+  // Tick to trigger mid-night recalculation
   const [tick, setTick] = useState(Date.now());
   useEffect(() => {
     const id = setInterval(() => setTick(Date.now()), 60000);
@@ -42,6 +43,7 @@ export function usePrayerMonitor() {
   // Monitor — activate timer + toast when within 5-min window
   useEffect(() => {
     if (prayers.length === 0) return;
+
     const check = () => {
       if (timer.active) return;
       const now = Date.now();
@@ -50,14 +52,21 @@ export function usePrayerMonitor() {
         if (diff >= 0 && diff <= 300000) {
           activateTimer(p.key, p.nameAr);
           showToast(p.nameAr);
-          setTimeout(() => dismissToast(), 6000);
+
+          // Clear any existing toast timer before setting new one
+          if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+          toastTimerRef.current = setTimeout(() => dismissToast(), 6000);
           return;
         }
       }
     };
+
     check();
     const id = setInterval(check, 2000);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
   }, [prayers, timer.active, activateTimer]);
 
   return prayers;

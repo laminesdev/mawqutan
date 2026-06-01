@@ -1,13 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useStore } from '../stores/useStore';
-
-function toEasternArabic(n: number): string {
-  const d = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-  return String(n)
-    .split('')
-    .map((c) => d[parseInt(c)])
-    .join('');
-}
+import { toEasternArabic } from '../utils/formatters';
 
 const PRAYER_COLORS: Record<string, string[]> = {
   Fajr: ['#1a1a3e', '#0a0e27', '#2d1b69'],
@@ -23,6 +16,7 @@ export default function Timer() {
   const [now, setNow] = useState(Date.now());
   const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
+  const [skipLock, setSkipLock] = useState(false);
 
   useEffect(() => {
     requestAnimationFrame(() => setVisible(true));
@@ -43,6 +37,15 @@ export default function Timer() {
       setTimeout(deactivateTimer, 600);
     }
   }, [remaining, exiting, deactivateTimer]);
+
+  const handleSkip = useCallback(() => {
+    if (skipLock) return;
+    setSkipLock(true);
+    setExiting(true);
+    setTimeout(() => {
+      deactivateTimer();
+    }, 600);
+  }, [skipLock, deactivateTimer]);
 
   if (remaining <= 0 && !visible) return null;
 
@@ -65,6 +68,9 @@ export default function Timer() {
         visible && !exiting ? 'opacity-100' : 'opacity-0'
       }`}
       style={exiting ? { transition: 'opacity 0.5s ease' } : undefined}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`مؤقت صلاة ${timer.prayerNameAr}`}
     >
       <div
         className="absolute inset-[-100%] pointer-events-none animate-timer-bg"
@@ -76,6 +82,7 @@ export default function Timer() {
         <div
           key={i}
           className="absolute rounded-full pointer-events-none animate-float"
+          aria-hidden="true"
           style={{
             left: `${(i * 37 + 11) % 100}%`,
             top: `${(i * 23 + 7) % 100}%`,
@@ -96,12 +103,12 @@ export default function Timer() {
         <h1 className="font-arabic text-[2.5rem] font-semibold text-text-primary m-0 [text-shadow:0_0_30px_rgba(212,168,67,0.2)]">
           {timer.prayerNameAr}
         </h1>
-        <div className="text-accent text-[0.9rem] my-2 mb-6 opacity-50 animate-ornament-pulse">
+        <div className="text-accent text-[0.9rem] my-2 mb-6 opacity-50 animate-ornament-pulse" aria-hidden="true">
           ✦
         </div>
 
         <div className="relative w-[280px] h-[280px] mx-auto">
-          <svg viewBox="0 0 280 280" className="absolute inset-0 w-full h-full">
+          <svg viewBox="0 0 280 280" className="absolute inset-0 w-full h-full" role="img" aria-label={`المتبقي ${minutes} دقيقة و ${seconds} ثانية`}>
             <defs>
               <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="var(--color-accent)" />
@@ -131,7 +138,7 @@ export default function Timer() {
               style={{ transition: 'stroke-dashoffset 0.3s linear' }}
             />
           </svg>
-          <div className="absolute inset-0 flex items-center justify-center font-arabic text-7xl font-semibold text-text-primary tracking-[0.08em] [text-shadow:0_0_40px_rgba(212,168,67,0.2)]">
+          <div className="absolute inset-0 flex items-center justify-center font-arabic text-7xl font-semibold text-text-primary tracking-[0.08em] [text-shadow:0_0_40px_rgba(212,168,67,0.2)]" aria-live="polite" aria-atomic="true">
             {timeStr}
           </div>
         </div>
@@ -142,8 +149,10 @@ export default function Timer() {
         </p>
 
         <button
-          onClick={deactivateTimer}
-          className="mt-6 text-xs font-arabic text-text-muted hover:text-text-secondary transition-colors duration-200 cursor-pointer bg-transparent border-none"
+          onClick={handleSkip}
+          disabled={skipLock}
+          className="mt-6 text-xs font-arabic text-text-muted hover:text-text-secondary transition-colors duration-200 cursor-pointer bg-transparent border-none disabled:opacity-30 disabled:cursor-default"
+          aria-label="تخطي المؤقت"
         >
           تخطي ←
         </button>

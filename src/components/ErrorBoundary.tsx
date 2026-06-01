@@ -23,9 +23,9 @@ export default class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="h-screen flex flex-col items-center justify-center bg-bg text-text-primary p-8 text-center">
-          <h1 className="text-[2rem] mb-4 font-arabic">حدث خطأ</h1>
-          <p className="text-text-secondary mb-8">{this.state.error?.message || 'Something went wrong'}</p>
+        <div className="h-screen flex flex-col items-center justify-center bg-bg text-text-primary p-8 text-center" role="alert">
+          <h1 className="text-3xl mb-4 font-arabic">حدث خطأ</h1>
+          <p className="text-text-secondary mb-8 text-sm">{this.state.error?.message || 'Something went wrong'}</p>
           <button
             className="bg-gradient-to-br from-accent to-accent-hover text-bg border-none px-8 py-3 rounded-lg font-semibold cursor-pointer font-arabic hover:opacity-90 transition-opacity duration-200"
             onClick={() => {

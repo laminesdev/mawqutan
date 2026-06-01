@@ -1,5 +1,3 @@
-export type { ElectronAPI } from './electron';
-
 export type PrayerKey = 'Fajr' | 'Dhuhr' | 'Asr' | 'Maghrib' | 'Isha';
 
 export interface RegionConfig {

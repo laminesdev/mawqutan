@@ -1,14 +1,13 @@
-import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, Notification } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import { exec } from 'child_process';
+import { IPC } from './ipc-channels';
 
 let win: BrowserWindow | null = null;
 let tray: Tray | null = null;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const _app = app as any;
-_app.isQuitting = false;
+let isQuitting = false;
+let isTimerActive = false;
 
 function createWindow() {
   win = new BrowserWindow({
@@ -38,9 +37,9 @@ function createWindow() {
     win.loadFile(path.join(__dirname, '../dist/index.html'));
   }
 
-  // Close button → hide to tray instead of quitting
+  // Close button → hide to tray unless user explicitly quit
   win.on('close', (event) => {
-    if (!_app.isQuitting) {
+    if (!isQuitting) {
       event.preventDefault();
       win?.hide();
     }
@@ -68,7 +67,7 @@ function createTray() {
     {
       label: 'خروج / Quit',
       click: () => {
-        _app.isQuitting = true;
+        isQuitting = true;
         app.quit();
       },
     },
@@ -83,25 +82,62 @@ function createTray() {
   });
 }
 
-// IPC handlers
-ipcMain.on('minimize-window', (event) => {
-  const bw = BrowserWindow.fromWebContents(event.sender);
-  bw?.hide();
+function playAdhan(): void {
+  const audioPath = path.join(__dirname, '../assets/adhan.mp3');
+  if (!fs.existsSync(audioPath)) {
+    win?.webContents.send(IPC.ADHAN_FAILED);
+    return;
+  }
+
+  const players = [
+    { cmd: `ffplay -nodisp -autoexit "${audioPath}"`, name: 'ffplay' },
+    { cmd: `paplay "${audioPath}"`, name: 'paplay' },
+    { cmd: `aplay "${audioPath}"`, name: 'aplay' },
+  ];
+
+  let tried = 0;
+
+  function tryNext(): void {
+    if (tried >= players.length) {
+      // All players failed — notify renderer
+      win?.webContents.send(IPC.ADHAN_FAILED);
+      return;
+    }
+
+    const player = players[tried++];
+    exec(player.cmd, (err) => {
+      if (err) tryNext();
+    });
+  }
+
+  tryNext();
+}
+
+function showPrayerNotification(prayerNameAr: string): void {
+  const notification = new Notification({
+    title: 'مَوْقُوتًا',
+    body: `حان وقت صلاة ${prayerNameAr}`,
+    silent: true, // We play adhan separately
+  });
+  notification.show();
+}
+
+// ── IPC Handlers ──
+
+ipcMain.on(IPC.MINIMIZE, (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.hide();
 });
 
-ipcMain.on('close-window', (event) => {
-  const bw = BrowserWindow.fromWebContents(event.sender);
-  bw?.hide();
+ipcMain.on(IPC.CLOSE, (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.hide();
 });
 
-ipcMain.on('quit-app', () => {
-  _app.isQuitting = true;
+ipcMain.on(IPC.QUIT, () => {
+  isQuitting = true;
   app.quit();
 });
 
-let isTimerActive = false;
-
-ipcMain.on('set-timer-active', (_event, active: boolean) => {
+ipcMain.on(IPC.SET_TIMER_ACTIVE, (_event, active: boolean) => {
   isTimerActive = active;
   if (active && win) {
     win.show();
@@ -112,43 +148,20 @@ ipcMain.on('set-timer-active', (_event, active: boolean) => {
   }
 });
 
-function playAdhan() {
-  const audioPath = path.join(__dirname, '../assets/adhan.mp3');
-  if (!fs.existsSync(audioPath)) return;
+ipcMain.on(IPC.PLAY_ADHAN, () => playAdhan());
 
-  const players = [
-    `ffplay -nodisp -autoexit "${audioPath}"`,
-    `paplay "${audioPath}"`,
-    `aplay "${audioPath}"`,
-  ];
-
-  for (const cmd of players) {
-    try {
-      exec(cmd, (err) => {
-        if (err) {
-          // try next player
-          return;
-        }
-      });
-      break; // first one that doesn't throw immediately
-    } catch {
-      continue;
-    }
-  }
-}
-
-ipcMain.on('play-adhan', () => playAdhan());
-
-ipcMain.on('set-auto-start', (_event, enabled: boolean) => {
+ipcMain.on(IPC.SET_AUTO_START, (_event, enabled: boolean) => {
   app.setLoginItemSettings({
     openAtLogin: enabled,
     path: process.execPath,
   });
 });
 
-ipcMain.handle('get-auto-start', () => {
+ipcMain.handle(IPC.GET_AUTO_START, () => {
   return app.getLoginItemSettings().openAtLogin;
 });
+
+// ── App Lifecycle ──
 
 app.whenReady().then(() => {
   createTray();

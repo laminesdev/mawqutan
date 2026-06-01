@@ -4,6 +4,7 @@ export interface ElectronAPI {
   quit: () => void;
   setTimerActive: (active: boolean) => void;
   playAdhan: () => void;
+  onAdhanFailed: (cb: () => void) => void;
   setAutoStart: (enabled: boolean) => void;
   getAutoStart: () => Promise<boolean>;
 }
