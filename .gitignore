@@ -14,3 +14,5 @@ release/
 
 # Electron build artifacts
 node_modules/electron/dist/
+release/
+out/

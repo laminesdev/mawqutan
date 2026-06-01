@@ -1,0 +1,36 @@
+appId: com.laminesdev.mawqutan
+productName: Mawqutan
+copyright: "Copyright © 2026 Mohamed Amine Boughaba"
+
+directories:
+  output: release
+  buildResources: assets
+
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - assets/**/*
+  - package.json
+
+linux:
+  target:
+    - AppImage
+    - deb
+  category: Utility
+  icon: assets/icons
+  synopsis: Prayer timer for desktop
+  description: >-
+    مَوْقُوتًا — A desktop app that shows prayer times and
+    helps you stay consistent with your salah.
+
+mac:
+  target:
+    - dmg
+  icon: assets/icons/256x256.png
+  category: public.app-category.productivity
+
+win:
+  target:
+    - portable
+    - nsis
+  icon: assets/icons/256x256.png
