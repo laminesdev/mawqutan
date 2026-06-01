@@ -164,6 +164,12 @@ export default function RegionSelect() {
                   );
                 })}
               </select>
+              {search.trim() && (
+                <div className="region-result-count">
+                  {filtered.length === 0 ? 'لا توجد نتائج' :
+                    `${filtered.length} ${filtered.length === 1 ? 'مدينة' : 'مدن'}`}
+                </div>
+              )}
             </>
           ) : (
             <div className="region-coords">

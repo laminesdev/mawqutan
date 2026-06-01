@@ -305,6 +305,14 @@ body {
   border-color: rgba(212, 168, 67, 0.4);
 }
 
+.region-result-count {
+  font-size: 0.75rem;
+  color: #6b6380;
+  text-align: right;
+  margin-top: -0.3rem;
+  padding-right: 0.3rem;
+}
+
 .region-start-btn {
   background: linear-gradient(135deg, #d4a843, #c49430);
   color: #0a0e27;
