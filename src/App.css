@@ -224,7 +224,7 @@ body {
 .region-subtitle {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 1rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   margin: 0.25rem 0 2rem;
 }
 
@@ -243,7 +243,7 @@ body {
 .region-toggle-btn {
   background: rgba(232, 224, 208, 0.05);
   border: 1px solid rgba(232, 224, 208, 0.1);
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   padding: 0.4rem 1rem;
   border-radius: 6px;
   cursor: pointer;
@@ -411,7 +411,7 @@ body {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
@@ -432,7 +432,7 @@ body {
 .prayer-autostart:hover { opacity: 0.9; }
 .autostart-label {
   font-size: 0.8rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   font-family: 'Noto Naskh Arabic', serif;
 }
 .autostart-toggle {
@@ -461,14 +461,14 @@ body {
 
 .prayer-ampm {
   font-size: 0.9rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   margin-top: 0.25rem;
 }
 
 .prayer-date {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 0.9rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   direction: rtl;
 }
 
@@ -494,7 +494,7 @@ body {
 
 .prayer-next-label {
   font-size: 0.75rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 0.5rem;
@@ -522,7 +522,7 @@ body {
 .prayer-next-remaining {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 0.85rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   margin-top: 0.3rem;
 }
 
@@ -707,7 +707,7 @@ body {
 .timer-subtitle {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 1.1rem;
-  color: #8b83a0;
+  color: var(--color-text-secondary);
   margin-top: 1rem;
 }
 
