@@ -343,6 +343,37 @@ body {
   text-align: center;
   margin-bottom: 0.25rem;
   margin-top: 1rem;
+  position: relative;
+}
+
+.prayer-autostart {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+}
+
+.prayer-autostart:hover {
+  opacity: 0.8;
+}
+
+.autostart-toggle {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(232, 224, 208, 0.15);
+  border: 1px solid rgba(232, 224, 208, 0.1);
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.autostart-toggle.on {
+  background: #d4a843;
+  border-color: #d4a843;
+  box-shadow: 0 0 8px rgba(212, 168, 67, 0.4);
 }
 
 .prayer-current-time {

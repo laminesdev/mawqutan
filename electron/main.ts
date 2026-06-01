@@ -139,6 +139,17 @@ function playAdhan() {
 
 ipcMain.on('play-adhan', () => playAdhan());
 
+ipcMain.on('set-auto-start', (_event, enabled: boolean) => {
+  app.setLoginItemSettings({
+    openAtLogin: enabled,
+    path: process.execPath,
+  });
+});
+
+ipcMain.handle('get-auto-start', () => {
+  return app.getLoginItemSettings().openAtLogin;
+});
+
 app.whenReady().then(() => {
   createTray();
   createWindow();

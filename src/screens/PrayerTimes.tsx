@@ -39,10 +39,15 @@ interface Props {
 
 export default function PrayerTimes({ prayers }: Props) {
   const [now, setNow] = useState(Date.now());
+  const [autoStart, setAutoStart] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    window.electronAPI?.getAutoStart().then(setAutoStart);
   }, []);
 
   const dt = new Date(now);
@@ -54,6 +59,12 @@ export default function PrayerTimes({ prayers }: Props) {
   const dateStr = `${DOW[dt.getDay()]}، ${dt.getDate()} ${MONTHS[dt.getMonth()]}`;
   const hijri = getHijriDate();
   const hijriStr = `${toEasternArabic(hijri.day)} ${hijri.month} ${toEasternArabic(hijri.year)}ﻫ`;
+
+  const toggleAutoStart = () => {
+    const next = !autoStart;
+    setAutoStart(next);
+    window.electronAPI?.setAutoStart(next);
+  };
 
   // determine current & next
   let currentIdx = -1;
@@ -70,6 +81,9 @@ export default function PrayerTimes({ prayers }: Props) {
       <div className="prayer-header">
         <div className="prayer-current-time">{timeStr}</div>
         <div className="prayer-ampm">{ampm}</div>
+        <div className="prayer-autostart" onClick={toggleAutoStart} title="تشغيل عند بدء النظام">
+          <span className={`autostart-toggle ${autoStart ? 'on' : ''}`} />
+        </div>
       </div>
       <div className="prayer-date">{dateStr}</div>
       <div className="prayer-hijri">{hijriStr}</div>
