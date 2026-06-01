@@ -357,6 +357,21 @@ body {
   position: relative;
 }
 
+.prayer-settings {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #8b83a0;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.prayer-settings:hover { color: #d4a843; }
+
 .prayer-autostart {
   position: absolute;
   right: 0;

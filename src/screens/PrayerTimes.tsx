@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PrayerInfo } from '../utils/prayerTimes';
 import { getHijriDate } from '../utils/hijri';
+import { useStore } from '../stores/useStore';
 
 function toEasternArabic(n: number): string {
   const d = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -79,6 +80,15 @@ export default function PrayerTimes({ prayers }: Props) {
   return (
     <div className="prayer-container">
       <div className="prayer-header">
+        <button className="prayer-settings" onClick={() => useStore.getState().setShowSettings(true)}
+          title="الإعدادات">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2"/>
+            <path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            <path d="M2.5 2.5l1.5 1.5M12 12l1.5 1.5M2.5 13.5l1.5-1.5M12 4l1.5-1.5"
+              stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+          </svg>
+        </button>
         <div className="prayer-current-time">{timeStr}</div>
         <div className="prayer-ampm">{ampm}</div>
         <div className="prayer-autostart" onClick={toggleAutoStart} title="تشغيل عند بدء النظام">
