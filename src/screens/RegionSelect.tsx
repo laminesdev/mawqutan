@@ -132,23 +132,25 @@ export default function RegionSelect() {
   };
 
   return (
-    <div className="region-container">
-      <div className="region-bg" />
-      <div className="region-content">
-        <h1 className="region-title">مَوْقُوتًا</h1>
-        <p className="region-subtitle">الصلاة على وقتها</p>
+    <div className="h-screen flex items-center justify-center bg-bg relative overflow-hidden">
+      <div className="absolute inset-[-50%] pointer-events-none bg-[radial-gradient(ellipse_at_30%_20%,rgba(212,168,67,0.04)_0%,transparent_50%),radial-gradient(ellipse_at_70%_80%,rgba(26,10,46,0.3)_0%,transparent_50%)] animate-[bgShift_12s_ease-in-out_infinite_alternate]" />
+      <div className="relative z-10 text-center p-8 max-[480px]:p-4 max-w-[360px] w-full animate-[fadeUp_0.8s_ease_forwards]">
+        <h1 className="font-arabic text-[3.5rem] max-[360px]:text-[2.5rem] font-bold text-text-primary m-0 [text-shadow:0_0_40px_rgba(212,168,67,0.15)]" dir="rtl">مَوْقُوتًا</h1>
+        <p className="font-arabic text-base text-text-secondary mt-1 mb-8 mx-0" dir="rtl">الصلاة على وقتها</p>
 
-        <div className="region-form">
-          <div className="region-mode-toggle">
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-2 justify-center">
             <button
-              className={`region-toggle-btn ${mode === 'city' ? 'active' : ''}`}
+              className={`bg-surface border border-border text-text-secondary px-4 py-[0.4rem] rounded cursor-pointer text-[0.9rem] transition-all duration-200 font-arabic flex-1 ${mode === 'city' ? 'bg-[rgba(212,168,67,0.12)] border-[rgba(212,168,67,0.3)] text-accent' : ''}`}
               onClick={() => setMode('city')}
+              dir="rtl"
             >
               مدينة
             </button>
             <button
-              className={`region-toggle-btn ${mode === 'custom' ? 'active' : ''}`}
+              className={`bg-surface border border-border text-text-secondary px-4 py-[0.4rem] rounded cursor-pointer text-[0.9rem] transition-all duration-200 font-arabic flex-1 ${mode === 'custom' ? 'bg-[rgba(212,168,67,0.12)] border-[rgba(212,168,67,0.3)] text-accent' : ''}`}
               onClick={() => setMode('custom')}
+              dir="rtl"
             >
               إحداثيات
             </button>
@@ -157,16 +159,18 @@ export default function RegionSelect() {
           {mode === 'city' ? (
             <>
               <input
-                className="region-search"
+                className="bg-surface border border-border text-text-primary px-4 py-[0.7rem] rounded text-[0.9rem] w-full font-arabic text-right transition-[border-color] duration-150 box-border placeholder:text-placeholder focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
                 placeholder="ابحث عن مدينة..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                dir="rtl"
               />
               <select
-                className="region-select"
+                className="bg-surface border border-border text-text-primary appearance-auto py-[0.4rem] px-2 min-h-[12rem] rounded text-[0.95rem] w-full font-arabic cursor-pointer text-right focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
                 value={selectedIdx}
                 onChange={(e) => setSelectedIdx(e.target.value)}
                 size={Math.min(filtered.length, 8)}
+                dir="rtl"
               >
                 {filtered.map((c, i) => {
                   const realIdx = CITIES.indexOf(c);
@@ -178,34 +182,36 @@ export default function RegionSelect() {
                 })}
               </select>
               {search.trim() && (
-                <div className="region-result-count">
+                <div className="text-xs text-text-verse text-right -mt-[0.3rem] pr-[0.3rem]" dir="rtl">
                   {filtered.length === 0 ? 'لا توجد نتائج' :
                     `${filtered.length} ${filtered.length === 1 ? 'مدينة' : 'مدن'}`}
                 </div>
               )}
             </>
           ) : (
-            <div className="region-coords">
+            <div className="flex gap-2">
               <input
-                className="region-input"
+                className="flex-1 bg-surface border border-border text-text-primary px-4 py-3 rounded text-[0.9rem] font-inter w-full text-left placeholder:text-placeholder focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
                 placeholder="خط العرض (Lat)"
                 value={customLat}
                 onChange={(e) => setCustomLat(e.target.value)}
                 type="number"
                 step="any"
+                dir="ltr"
               />
               <input
-                className="region-input"
+                className="flex-1 bg-surface border border-border text-text-primary px-4 py-3 rounded text-[0.9rem] font-inter w-full text-left placeholder:text-placeholder focus:outline-none focus:border-[rgba(212,168,67,0.4)]"
                 placeholder="خط الطول (Lng)"
                 value={customLng}
                 onChange={(e) => setCustomLng(e.target.value)}
                 type="number"
                 step="any"
+                dir="ltr"
               />
             </div>
           )}
 
-          <select className="region-select" value={method} onChange={(e) => setMethod(e.target.value)}>
+          <select className="bg-surface border border-border text-text-primary appearance-none py-3 px-4 rounded text-[0.95rem] w-full font-arabic cursor-pointer text-right focus:outline-none focus:border-[rgba(212,168,67,0.4)]" value={method} onChange={(e) => setMethod(e.target.value)} dir="rtl">
             {Object.entries(CALC_METHOD_NAMES).map(([k, v]) => (
               <option key={k} value={k}>
                 {v}
@@ -213,12 +219,12 @@ export default function RegionSelect() {
             ))}
           </select>
 
-          <button className="region-start-btn" onClick={handleStart} disabled={starting}>
+          <button className="bg-gradient-to-br from-accent to-accent-hover text-bg border-none px-8 py-3 rounded text-[1.1rem] font-semibold cursor-pointer transition-all duration-200 mt-2 font-arabic disabled:opacity-60 disabled:cursor-wait hover:-translate-y-px hover:shadow-[0_4px_20px_rgba(212,168,67,0.3)]" onClick={handleStart} disabled={starting} dir="rtl">
             {starting ? 'جاري…' : 'ابدأ'}
           </button>
         </div>
 
-        <p className="region-verse">﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾</p>
+        <p className="font-arabic text-xs text-text-verse mt-8" dir="rtl">﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾</p>
       </div>
     </div>
   );

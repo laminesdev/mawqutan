@@ -78,9 +78,10 @@ export default function PrayerTimes({ prayers }: Props) {
   const nextPrayer = prayers[nextIdx];
 
   return (
-    <div className="prayer-container">
-      <div className="prayer-header">
-        <button className="prayer-settings" onClick={() => useStore.getState().setShowSettings(true)}
+    <div className="h-screen flex flex-col items-center p-8 bg-bg overflow-y-auto animate-[fadeIn_0.5s_ease]">
+      <div className="relative text-center mt-4 mb-1">
+        <button className="absolute left-0 top-1/2 -translate-y-1/2 bg-transparent border-0 text-text-secondary cursor-pointer p-1 rounded-[4px] transition-colors duration-150 hover:text-accent"
+          onClick={() => useStore.getState().setShowSettings(true)}
           title="الإعدادات">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2"/>
@@ -89,48 +90,48 @@ export default function PrayerTimes({ prayers }: Props) {
               stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
         </button>
-        <div className="prayer-current-time">{timeStr}</div>
-        <div className="prayer-ampm">{ampm}</div>
+        <div className="text-[4rem] font-semibold text-text-primary font-arabic tracking-wide leading-none">{timeStr}</div>
+        <div className="text-sm text-text-secondary mt-1">{ampm}</div>
       </div>
-      <div className="prayer-date">{dateStr}</div>
-      <div className="prayer-hijri">{hijriStr}</div>
-      <div className="prayer-autostart" onClick={toggleAutoStart} title="تشغيل عند بدء النظام">
-        <span className="autostart-label">بدء تلقائي</span>
-        <span className={`autostart-toggle ${autoStart ? 'on' : ''}`} />
+      <div className="font-arabic text-sm text-text-secondary" dir="rtl">{dateStr}</div>
+      <div className="font-arabic text-xs text-text-muted mb-6" dir="rtl">{hijriStr}</div>
+      <div className="flex items-center gap-2 justify-center mb-4 cursor-pointer opacity-50 hover:opacity-90 transition-opacity duration-200" onClick={toggleAutoStart} title="تشغيل عند بدء النظام">
+        <span className="text-xs text-text-secondary font-arabic">بدء تلقائي</span>
+        <span className={`inline-block w-3.5 h-3.5 rounded-full border border-white/20 bg-white/5 transition-all duration-200 ${autoStart ? 'bg-accent border-accent shadow-[0_0_8px_rgba(212,168,67,0.4)]' : ''}`} />
       </div>
 
       {/* Next prayer card */}
-      <div className="prayer-next-card">
-        <div className="prayer-next-label">
+      <div className="bg-[rgba(212,168,67,0.06)] border border-[rgba(212,168,67,0.15)] rounded-[12px] px-6 py-4 w-full max-w-[320px] text-center mb-6 animate-[fadeUp_0.5s_ease]">
+        <div className="text-xs text-text-secondary uppercase tracking-widest mb-2">
           {isNextToday ? 'الصلاة القادمة' : 'الصلاة القادمة — غداً'}
         </div>
-        <div className="prayer-next-content">
-          <div className="prayer-ring">
-            <svg viewBox="0 0 48 48" width="48" height="48">
+        <div className="flex justify-center items-center gap-3">
+          <div className="relative flex items-center justify-center">
+            <svg viewBox="0 0 48 48" width="48" height="48" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(212,168,67,0.15)" strokeWidth="2"/>
               <circle cx="24" cy="24" r="20" fill="none" stroke="#d4a843" strokeWidth="2"
                 strokeLinecap="round" strokeDasharray="125.6"
                 strokeDashoffset="0" transform="rotate(-90 24 24)"/>
             </svg>
-            <span className="prayer-next-name">{nextPrayer.nameAr}</span>
+            <span className="font-arabic text-2xl font-semibold text-accent">{nextPrayer.nameAr}</span>
           </div>
-          <span className="prayer-next-time">{formatTime12(nextPrayer.time)}</span>
+          <span className="text-xl text-text-primary">{formatTime12(nextPrayer.time)}</span>
         </div>
-        <div className="prayer-next-remaining">{minutesUntil(nextPrayer.time)}</div>
+        <div className="font-arabic text-sm text-text-secondary mt-1">{minutesUntil(nextPrayer.time)}</div>
       </div>
 
       {/* Prayer list */}
-      <div className="prayer-list">
+      <div className="w-full max-w-[320px]">
         {prayers.map((p, i) => {
           const isPast = p.time.getTime() < now - 300000;
           const isCurrent = i === currentIdx;
-          let cls = 'prayer-row';
-          if (isPast) cls += ' past';
-          if (isCurrent) cls += ' active';
+          let cls = 'flex justify-between items-center px-4 py-[0.9rem] border-b border-[rgba(232,224,208,0.05)] transition-all duration-300';
+          if (isPast) cls += ' opacity-40';
+          if (isCurrent) cls += ' bg-[rgba(212,168,67,0.08)] rounded border-b-transparent my-[0.2rem]';
           return (
             <div key={p.key} className={cls}>
-              <span className="prayer-row-name">{p.nameAr}</span>
-              <span className={`prayer-row-time${isCurrent ? ' glow' : ''}`}>
+              <span className="font-arabic text-lg text-text-primary">{p.nameAr}</span>
+              <span className={`text-base tracking-wide ${isCurrent ? 'text-accent [text-shadow:0_0_20px_rgba(212,168,67,0.3)]' : 'text-[#b0a8c0]'}`}>
                 {formatTime12(p.time)}
               </span>
             </div>
@@ -138,7 +139,7 @@ export default function PrayerTimes({ prayers }: Props) {
         })}
       </div>
 
-      <div className="prayer-footer">
+      <div className="font-arabic text-xs text-text-verse text-center mt-auto pt-6 pb-2 leading-relaxed" dir="rtl">
         ﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾
       </div>
     </div>

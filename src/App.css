@@ -1,3 +1,4 @@
+/* ============ FONTS ============ */
 @font-face {
   font-family: 'Noto Naskh Arabic';
   src: url('../fonts/NotoNaskhArabic-Regular.ttf') format('truetype');
@@ -5,7 +6,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Noto Naskh Arabic';
   src: url('../fonts/NotoNaskhArabic-Bold.ttf') format('truetype');
@@ -13,7 +13,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Inter';
   src: url('../fonts/Inter-Light.ttf') format('truetype');
@@ -21,7 +20,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Inter';
   src: url('../fonts/Inter-Regular.ttf') format('truetype');
@@ -29,7 +27,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Inter';
   src: url('../fonts/Inter-Medium.ttf') format('truetype');
@@ -37,7 +34,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Inter';
   src: url('../fonts/Inter-SemiBold.ttf') format('truetype');
@@ -46,7 +42,7 @@
   font-display: swap;
 }
 
-/* ============ DESIGN TOKENS ============ */
+/* ============ DESIGN TOKENS (fallback) ============ */
 :root {
   --color-bg: #0a0e27;
   --color-surface: rgba(232, 224, 208, 0.05);
@@ -69,726 +65,89 @@
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
+  --space-2xl: 3rem;
 
   --radius: 6px;
-  --radius-lg: 12px;
-
   --font-arabic: 'Noto Naskh Arabic', serif;
   --font-latin: 'Inter', system-ui, sans-serif;
-
-  --transition-fast: 0.15s;
-  --transition-normal: 0.2s;
-  --transition-slow: 0.3s;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* ============ RESET ============ */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-html,
-body,
-#root {
+html, body, #root {
   height: 100%;
-  width: 100%;
   overflow: hidden;
 }
 
 body {
-  font-family: var(--font-latin);
-  background: var(--color-bg);
-  color: var(--color-text-primary);
+  background: #0a0e27;
+  color: #e8e0d0;
+  font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  user-select: none;
+  direction: rtl;
 }
 
-/* ============ SELECTION ============ */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
 ::selection {
   background: rgba(212, 168, 67, 0.3);
-  color: var(--color-text-primary);
+  color: #e8e0d0;
 }
 
-*:focus-visible {
-  outline: 2px solid var(--color-accent);
+:focus-visible {
+  outline: 1px solid rgba(212, 168, 67, 0.4);
   outline-offset: 2px;
 }
 
-/* ============ TITLE BAR ============ */
+/* ============ KEYFRAMES ============ */
 
-.title-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 10px;
-  -webkit-app-region: drag;
-  z-index: 100;
-}
+/* Used via animate-[name] in Tailwind */
 
-.title-bar-buttons {
-  -webkit-app-region: no-drag;
-  display: flex;
-  gap: 6px;
-}
-
-.title-btn {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  transition: filter 0.15s;
-  font-size: 0;
-}
-
-.title-btn:hover {
-  filter: brightness(1.3);
-}
-
-.title-btn.close {
-  background: #ff5f57;
-}
-
-.title-btn.minimize {
-  background: #febc2e;
-}
-
-/* ============ REGION SELECT ============ */
-
-.region-container {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg);
-  position: relative;
-  overflow: hidden;
-}
-
-.region-bg {
-  position: absolute;
-  inset: -50%;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(212, 168, 67, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(26, 10, 46, 0.3) 0%, transparent 50%);
-  animation: bgShift 12s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-@keyframes bgShift {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(-2%, -1%) scale(1.03);
-  }
-}
-
-.region-content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: var(--space-xl);
-  max-width: 360px;
-  width: 100%;
-  animation: fadeUp 0.8s ease forwards;
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-0.5rem); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.region-title {
-  font-family: var(--font-arabic);
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  margin: 0;
-  text-shadow: 0 0 40px rgba(212, 168, 67, 0.15);
-}
-
-.region-subtitle {
-  font-family: var(--font-arabic);
-  font-size: 1rem;
-  color: var(--color-text-secondary);
-  margin: 0.25rem 0 2rem;
-}
-
-.region-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.region-mode-toggle {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-.region-toggle-btn {
-  background: rgba(232, 224, 208, 0.05);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
-  padding: 0.4rem 1rem;
-  border-radius: var(--radius);
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  font-family: var(--font-arabic);
-  flex: 1;
-}
-
-.region-toggle-btn.active {
-  background: rgba(212, 168, 67, 0.12);
-  border-color: rgba(212, 168, 67, 0.3);
-  color: var(--color-accent);
-}
-
-.region-select {
-  background: rgba(232, 224, 208, 0.05);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius);
-  font-size: 0.95rem;
-  width: 100%;
-  font-family: var(--font-arabic);
-  appearance: none;
-  cursor: pointer;
-  text-align: right;
-  direction: rtl;
-}
-
-.region-select[size] {
-  appearance: auto;
-  padding: 0.4rem 0.5rem;
-  min-height: 12rem;
-}
-
-.region-select option {
-  background: var(--color-surface-raised);
-  color: var(--color-text-primary);
-  padding: 0.3rem 0.5rem;
-}
-
-.region-search {
-  background: rgba(232, 224, 208, 0.05);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  padding: 0.7rem 1rem;
-  border-radius: var(--radius);
-  font-size: 0.9rem;
-  width: 100%;
-  font-family: var(--font-arabic);
-  text-align: right;
-  direction: rtl;
-  transition: border-color 0.15s;
-  box-sizing: border-box;
-}
-
-.region-search:focus {
-  outline: none;
-  border-color: rgba(212, 168, 67, 0.4);
-}
-
-.region-search::placeholder {
-  color: var(--color-placeholder);
-}
-
-.region-coords {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.region-input {
-  flex: 1;
-  background: rgba(232, 224, 208, 0.05);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius);
-  font-size: 0.9rem;
-  font-family: var(--font-latin);
-  width: 100%;
-  direction: ltr;
-  text-align: left;
-}
-
-.region-input::placeholder {
-  color: var(--color-placeholder);
-}
-
-.region-input:focus,
-.region-select:focus {
-  outline: none;
-  border-color: rgba(212, 168, 67, 0.4);
-}
-
-.region-result-count {
-  font-size: 0.75rem;
-  color: var(--color-text-verse);
-  text-align: right;
-  margin-top: -0.3rem;
-  padding-right: 0.3rem;
-}
-
-.region-start-btn {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
-  color: var(--color-bg);
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: var(--radius);
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 0.5rem;
-  font-family: var(--font-arabic);
-}
-
-.region-start-btn:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.region-start-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(212, 168, 67, 0.3);
-}
-
-.region-verse {
-  font-family: var(--font-arabic);
-  font-size: 0.75rem;
-  color: var(--color-text-verse);
-  margin-top: 2rem;
-  direction: rtl;
-}
-
-/* ============ PRAYER TIMES ============ */
-
-.prayer-container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-xl);
-  background: var(--color-bg);
-  overflow-y: auto;
-  animation: fadeIn 0.5s ease;
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-.prayer-header {
-  text-align: center;
-  margin-bottom: 0.25rem;
-  margin-top: 1rem;
-  position: relative;
-}
-
-.prayer-settings {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: color 0.15s;
-}
-.prayer-settings:hover { color: var(--color-accent); }
-
-.prayer-autostart {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-}
-.prayer-autostart:hover { opacity: 0.9; }
-.autostart-label {
-  font-size: 0.8rem;
-  color: var(--color-text-secondary);
-  font-family: var(--font-arabic);
-}
-.autostart-toggle {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1px solid rgba(232, 224, 208, 0.2);
-  background: rgba(232, 224, 208, 0.08);
-  transition: all 0.2s;
-}
-.autostart-toggle.on {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  box-shadow: 0 0 8px rgba(212, 168, 67, 0.4);
-}
-
-.prayer-current-time {
-  font-size: 4rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  font-family: 'Noto Naskh Arabic', 'Inter', system-ui;
-  letter-spacing: 0.05em;
-  line-height: 1;
-}
-
-.prayer-ampm {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  margin-top: 0.25rem;
-}
-
-.prayer-date {
-  font-family: var(--font-arabic);
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  direction: rtl;
-}
-
-.prayer-hijri {
-  font-family: var(--font-arabic);
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  direction: rtl;
-  margin-bottom: 1.5rem;
-}
-
-.prayer-next-card {
-  background: rgba(212, 168, 67, 0.06);
-  border: 1px solid rgba(212, 168, 67, 0.15);
-  border-radius: var(--radius-lg);
-  padding: 1rem 1.5rem;
-  width: 100%;
-  max-width: 320px;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  animation: fadeUp 0.5s ease;
-}
-
-.prayer-next-label {
-  font-size: 0.75rem;
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
-}
-
-.prayer-next-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.prayer-ring {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.prayer-ring svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.prayer-next-name {
-  font-family: var(--font-arabic);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-.prayer-next-time {
-  font-size: 1.2rem;
-  color: var(--color-text-primary);
-}
-
-.prayer-next-remaining {
-  font-family: var(--font-arabic);
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  margin-top: 0.3rem;
-}
-
-.prayer-list {
-  width: 100%;
-  max-width: 320px;
-}
-
-.prayer-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 1rem;
-  border-bottom: 1px solid rgba(232, 224, 208, 0.05);
-  transition: all 0.3s ease;
-}
-
-.prayer-row.past {
-  opacity: 0.4;
-}
-
-.prayer-row.active {
-  background: rgba(212, 168, 67, 0.08);
-  border-radius: var(--radius);
-  border-bottom-color: transparent;
-  margin: 0.2rem 0;
-}
-
-.prayer-row-name {
-  font-family: var(--font-arabic);
-  font-size: 1.15rem;
-  color: var(--color-text-primary);
-}
-
-.prayer-row-time {
-  font-size: 1rem;
-  color: #b0a8c0;
-  letter-spacing: 0.05em;
-}
-
-.prayer-row-time.glow {
-  color: var(--color-accent);
-  text-shadow: 0 0 20px rgba(212, 168, 67, 0.3);
-}
-
-.prayer-footer {
-  font-family: var(--font-arabic);
-  font-size: 0.8rem;
-  color: var(--color-text-verse);
-  text-align: center;
-  margin-top: auto;
-  padding: 1.5rem 0 0.5rem;
-  direction: rtl;
-  line-height: 1.6;
-}
-
-/* ============ TIMER ============ */
-
-.timer-container {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  z-index: 200;
-  overflow: hidden;
-}
-
-.timer-container.visible {
-  opacity: 1;
-}
-
-.timer-bg {
-  position: absolute;
-  inset: -100%;
-  pointer-events: none;
-  animation: timerBgShift 10s ease-in-out infinite alternate;
-}
-
-@keyframes timerBgShift {
+@keyframes bgShift {
   0% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1.05) rotate(2deg); }
-}
-
-.timer-particle {
-  position: absolute;
-  background: rgba(212, 168, 67, 0.25);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: particleFloat linear infinite;
-}
-
-@keyframes particleFloat {
-  0% {
-    transform: translateY(0) translateX(0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.8;
-  }
-  70% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(-80px) translateX(20px);
-    opacity: 0;
-  }
-}
-
-.timer-content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
-}
-
-.timer-container.visible .timer-content {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.timer-prayer-name {
-  font-family: var(--font-arabic);
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin: 0;
-  text-shadow: 0 0 30px rgba(212, 168, 67, 0.2);
-}
-
-.timer-ornament {
-  color: var(--color-accent);
-  font-size: 0.9rem;
-  margin: 0.5rem 0 1.5rem;
-  opacity: 0.5;
-  animation: ornamentPulse 2s ease-in-out infinite;
-}
-
-@keyframes ornamentPulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
-
-.timer-circle {
-  position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 0 auto;
-}
-
-.timer-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.timer-circle-progress {
-  transition: stroke-dashoffset 0.3s linear;
-  filter: drop-shadow(0 0 8px rgba(212, 168, 67, 0.4));
-}
-
-.timer-digits {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Noto Naskh Arabic', 'Inter', system-ui;
-  font-size: 4.5rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 40px rgba(212, 168, 67, 0.2);
-}
-
-.timer-subtitle {
-  font-family: var(--font-arabic);
-  font-size: 1.1rem;
-  color: var(--color-text-secondary);
-  margin-top: 1rem;
-}
-
-.timer-verse {
-  font-family: var(--font-arabic);
-  font-size: 0.8rem;
-  color: var(--color-text-verse);
-  margin-top: 0.75rem;
-  direction: rtl;
-  line-height: 1.6;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ============ ERROR BOUNDARY ============ */
-
-.error-boundary {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg);
-  color: var(--color-text-primary);
-  padding: 2rem;
-  text-align: center;
-  font-family: 'system-ui', sans-serif;
-}
-
-.error-boundary h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  font-family: var(--font-arabic), serif;
-}
-
-.error-boundary p {
-  color: var(--color-text-secondary);
-  margin-bottom: 2rem;
-}
-
-.error-btn {
-  background: linear-gradient(135deg, var(--color-accent), #c49430);
-  color: var(--color-bg);
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-arabic), serif;
-  transition: opacity 0.2s ease;
-}
-
-.error-btn:hover {
-  opacity: 0.9;
+  100% { transform: scale(1) rotate(6deg); }
 }
 
 /* ============ SCROLLBAR ============ */
-
 ::-webkit-scrollbar {
   width: 3px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
   background: rgba(232, 224, 208, 0.08);
   border-radius: var(--radius);
@@ -797,66 +156,9 @@ body {
   background: rgba(232, 224, 208, 0.15);
 }
 
-/* ============ TOAST ============ */
-.toast {
-  position: fixed;
-  top: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: var(--color-toast-bg);
-  border: 1px solid rgba(212, 168, 67, 0.2);
-  border-radius: var(--radius);
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  z-index: 999;
-  animation: toastIn 0.4s ease;
-  max-width: 300px;
-}
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(-0.5rem); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-.toast-text {
-  font-family: var(--font-arabic);
-  font-size: 0.9rem;
-  color: var(--color-text-primary);
-}
-
-/* ============ RESPONSIVE ============ */
-@media (max-width: 480px) {
-  .region-content {
-    padding: var(--space-md);
-  }
-  .prayer-container {
-    padding: var(--space-md);
-  }
-  .prayer-current-time {
-    font-size: 3rem;
-  }
-  .timer-countdown {
-    font-size: 3.5rem;
-  }
-}
-@media (max-width: 360px) {
-  .region-title {
-    font-size: 2.5rem;
-  }
-  .prayer-current-time {
-    font-size: 2.5rem;
-  }
-  .timer-countdown {
-    font-size: 3rem;
-  }
-}
-
 /* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

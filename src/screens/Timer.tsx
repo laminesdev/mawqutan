@@ -61,16 +61,21 @@ export default function Timer() {
 
   return (
     <div
-      className={`timer-container ${visible && !exiting ? 'visible' : ''}`}
-      style={exiting ? { opacity: 0, transition: 'opacity 0.5s ease' } : undefined}
+      className={`fixed inset-0 flex items-center justify-center bg-bg overflow-hidden transition-opacity duration-[0.8s] z-[200] ${
+        visible && !exiting ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={exiting ? { transition: 'opacity 0.5s ease' } : undefined}
     >
-      <div className="timer-bg" style={{ background: bgGrad }} />
+      <div
+        className="absolute inset-[-100%] pointer-events-none animate-timer-bg"
+        style={{ background: bgGrad }}
+      />
 
       {/* Floating particles */}
       {Array.from({ length: 8 }).map((_, i) => (
         <div
           key={i}
-          className="timer-particle"
+          className="absolute rounded-full pointer-events-none animate-float"
           style={{
             left: `${(i * 37 + 11) % 100}%`,
             top: `${(i * 23 + 7) % 100}%`,
@@ -83,12 +88,20 @@ export default function Timer() {
         />
       ))}
 
-      <div className="timer-content">
-        <h1 className="timer-prayer-name">{timer.prayerNameAr}</h1>
-        <div className="timer-ornament">✦</div>
+      <div
+        className={`relative z-[1] text-center transition-all duration-[0.8s] delay-[0.4s] ${
+          visible && !exiting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'
+        }`}
+      >
+        <h1 className="font-arabic text-[2.5rem] font-semibold text-text-primary m-0 [text-shadow:0_0_30px_rgba(212,168,67,0.2)]">
+          {timer.prayerNameAr}
+        </h1>
+        <div className="text-accent text-[0.9rem] my-2 mb-6 opacity-50 animate-ornament-pulse">
+          ✦
+        </div>
 
-        <div className="timer-circle">
-          <svg viewBox="0 0 280 280" className="timer-svg">
+        <div className="relative w-[280px] h-[280px] mx-auto">
+          <svg viewBox="0 0 280 280" className="absolute inset-0 w-full h-full">
             <defs>
               <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#d4a843" />
@@ -114,14 +127,19 @@ export default function Timer() {
               strokeDasharray={circumference}
               strokeDashoffset={offset}
               transform="rotate(-90 140 140)"
-              className="timer-circle-progress"
+              className="drop-shadow-[0_0_8px_rgba(212,168,67,0.4)]"
+              style={{ transition: 'stroke-dashoffset 0.3s linear' }}
             />
           </svg>
-          <div className="timer-digits">{timeStr}</div>
+          <div className="absolute inset-0 flex items-center justify-center font-arabic text-7xl font-semibold text-text-primary tracking-[0.08em] [text-shadow:0_0_40px_rgba(212,168,67,0.2)]">
+            {timeStr}
+          </div>
         </div>
 
-        <p className="timer-subtitle">دقائق للتأمل</p>
-        <p className="timer-verse">﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾</p>
+        <p className="font-arabic text-[1.1rem] text-text-secondary mt-4">دقائق للتأمل</p>
+        <p className="font-arabic text-[0.8rem] text-text-verse mt-3 leading-[1.6] max-w-[300px] mx-auto [direction:rtl]">
+          ﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾
+        </p>
       </div>
     </div>
   );
