@@ -747,7 +747,10 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(232, 224, 208, 0.08);
-  border-radius: 2px;
+  border-radius: var(--radius);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(232, 224, 208, 0.15);
 }
 
 /* ============ TOAST ============ */
