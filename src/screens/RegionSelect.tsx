@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../stores/useStore';
 import { CALC_METHOD_NAMES } from '../utils/prayerTimes';
 
@@ -100,6 +100,13 @@ export default function RegionSelect() {
     const q = search.toLowerCase();
     return CITIES.filter((c) => c.name.toLowerCase().includes(q));
   }, [search]);
+
+  useEffect(() => {
+    if (filtered.length === 1 && search.trim()) {
+      const idx = CITIES.indexOf(filtered[0]);
+      if (idx !== -1) setSelectedIdx(String(idx));
+    }
+  }, [filtered, search]);
 
   const handleStart = () => {
     if (starting) return;
