@@ -195,7 +195,7 @@ body {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 2rem;
+  padding: var(--space-xl);
   max-width: 360px;
   width: 100%;
   animation: fadeUp 0.8s ease forwards;
@@ -245,7 +245,7 @@ body {
   border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
   padding: 0.4rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s;
@@ -264,7 +264,7 @@ body {
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 0.95rem;
   width: 100%;
   font-family: 'Noto Naskh Arabic', serif;
@@ -291,7 +291,7 @@ body {
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 0.7rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 0.9rem;
   width: 100%;
   font-family: 'Noto Naskh Arabic', serif;
@@ -321,7 +321,7 @@ body {
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 0.9rem;
   font-family: 'Inter', system-ui, sans-serif;
   width: 100%;
@@ -352,7 +352,7 @@ body {
   color: #0a0e27;
   border: none;
   padding: 0.75rem 2rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
@@ -386,7 +386,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: var(--space-xl);
   background: var(--color-bg);
   overflow-y: auto;
   animation: fadeIn 0.5s ease;
@@ -483,7 +483,7 @@ body {
 .prayer-next-card {
   background: rgba(212, 168, 67, 0.06);
   border: 1px solid rgba(212, 168, 67, 0.15);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1rem 1.5rem;
   width: 100%;
   max-width: 320px;
@@ -546,7 +546,7 @@ body {
 
 .prayer-row.active {
   background: rgba(212, 168, 67, 0.08);
-  border-radius: 8px;
+  border-radius: var(--radius);
   border-bottom-color: transparent;
   margin: 0.2rem 0;
 }
