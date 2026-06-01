@@ -262,7 +262,7 @@ body {
 }
 
 .region-search::placeholder {
-  color: #5a5470;
+  color: #7a7390;
 }
 
 .region-coords {
@@ -285,7 +285,7 @@ body {
 }
 
 .region-input::placeholder {
-  color: #5a5470;
+  color: #7a7390;
 }
 
 .region-input:focus,
