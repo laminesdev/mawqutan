@@ -86,6 +86,7 @@ const CITIES = [
 
 export default function RegionSelect() {
   const setRegion = useStore((s) => s.setRegion);
+  const setShowSettings = useStore((s) => s.setShowSettings);
   const [mode, setMode] = useState<'city' | 'custom'>('city');
   const [search, setSearch] = useState('');
   const [selectedIdx, setSelectedIdx] = useState('15'); // default: Algiers
@@ -114,6 +115,7 @@ export default function RegionSelect() {
     }
     if (isNaN(lat) || isNaN(lng)) return;
     setRegion({ cityName: name, latitude: lat, longitude: lng, calculationMethod: method });
+    setShowSettings(false);
   };
 
   return (

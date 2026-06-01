@@ -38,6 +38,7 @@ export default function App() {
   const region = useStore((s) => s.region);
   const timer = useStore((s) => s.timer);
   const activateTimer = useStore((s) => s.activateTimer);
+  const showSettings = useStore((s) => s.showSettings);
 
   // Tick to recalculate at midnight / every minute
   const [tick, setTick] = useState(Date.now());
@@ -89,9 +90,9 @@ export default function App() {
   return (
     <ErrorBoundary>
       <TitleBar />
-      {!region && <RegionSelect />}
+      {(!region || showSettings) && <RegionSelect />}
       {region && timer.active && <TimerScreen />}
-      {region && !timer.active && <PrayerTimesScreen prayers={prayers} />}
+      {region && !timer.active && !showSettings && <PrayerTimesScreen prayers={prayers} />}
     </ErrorBoundary>
   );
 }
