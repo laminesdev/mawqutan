@@ -1,5 +1,7 @@
 import { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } from 'electron';
 import * as path from 'path';
+import * as fs from 'fs';
+import { exec } from 'child_process';
 
 let win: BrowserWindow | null = null;
 let tray: Tray | null = null;
@@ -109,6 +111,33 @@ ipcMain.on('set-timer-active', (_event, active: boolean) => {
     win.setAlwaysOnTop(false);
   }
 });
+
+function playAdhan() {
+  const audioPath = path.join(__dirname, '../assets/adhan.mp3');
+  if (!fs.existsSync(audioPath)) return;
+
+  const players = [
+    `ffplay -nodisp -autoexit "${audioPath}"`,
+    `paplay "${audioPath}"`,
+    `aplay "${audioPath}"`,
+  ];
+
+  for (const cmd of players) {
+    try {
+      exec(cmd, (err) => {
+        if (err) {
+          // try next player
+          return;
+        }
+      });
+      break; // first one that doesn't throw immediately
+    } catch {
+      continue;
+    }
+  }
+}
+
+ipcMain.on('play-adhan', () => playAdhan());
 
 app.whenReady().then(() => {
   createTray();
