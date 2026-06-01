@@ -781,6 +781,33 @@ body {
   color: var(--color-text-primary);
 }
 
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+  .region-content {
+    padding: var(--space-md);
+  }
+  .prayer-container {
+    padding: var(--space-md);
+  }
+  .prayer-current-time {
+    font-size: 3rem;
+  }
+  .timer-countdown {
+    font-size: 3.5rem;
+  }
+}
+@media (max-width: 360px) {
+  .region-title {
+    font-size: 2.5rem;
+  }
+  .prayer-current-time {
+    font-size: 2.5rem;
+  }
+  .timer-countdown {
+    font-size: 3rem;
+  }
+}
+
 /* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
   *,
