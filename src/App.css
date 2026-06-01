@@ -750,6 +750,34 @@ body {
   border-radius: 2px;
 }
 
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-toast-bg);
+  border: 1px solid rgba(212, 168, 67, 0.2);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  z-index: 999;
+  animation: toastIn 0.4s ease;
+  max-width: 300px;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-0.5rem); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.toast-text {
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+}
+
 /* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
   *,

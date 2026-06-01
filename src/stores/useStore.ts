@@ -36,7 +36,10 @@ interface AppState {
   activateTimer: (name: string, nameAr: string) => void;
   deactivateTimer: () => void;
   showSettings: boolean;
-  setShowSettings: (v: boolean) => void;
+  setShowSettings: (_v: boolean) => void;
+  toast: { nameAr: string } | null;
+  showToast: (nameAr: string) => void;
+  dismissToast: () => void;
 }
 
 const defaultTimer: TimerState = {
@@ -54,6 +57,9 @@ const defaultState = {
   deactivateTimer: () => {},
   showSettings: false,
   setShowSettings: (_v: boolean) => {},
+  toast: null,
+  showToast: (_nameAr: string) => {},
+  dismissToast: () => {},
 };
 
 export const useStore = create<AppState>()(
@@ -80,6 +86,9 @@ export const useStore = create<AppState>()(
       },
       showSettings: false,
       setShowSettings: (v) => set({ showSettings: v }),
+      toast: null,
+      showToast: (nameAr) => set({ toast: { nameAr } }),
+      dismissToast: () => set({ toast: null }),
     }),
     {
       name: 'mawqutan-settings',
