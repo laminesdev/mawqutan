@@ -61,6 +61,7 @@
   --color-border: rgba(232, 224, 208, 0.1);
   --color-placeholder: #7a7390;
   --color-toast-bg: rgba(17, 21, 51, 0.95);
+  --color-surface-raised: #111533;
 
   --space-2xs: 0.125rem;
   --space-xs: 0.25rem;
@@ -281,7 +282,7 @@ body {
 }
 
 .region-select option {
-  background: #111533;
+  background: var(--color-surface-raised);
   color: var(--color-text-primary);
   padding: 0.3rem 0.5rem;
 }
@@ -341,15 +342,15 @@ body {
 
 .region-result-count {
   font-size: 0.75rem;
-  color: #6b6380;
+  color: var(--color-text-verse);
   text-align: right;
   margin-top: -0.3rem;
   padding-right: 0.3rem;
 }
 
 .region-start-btn {
-  background: linear-gradient(135deg, #d4a843, #c49430);
-  color: #0a0e27;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
+  color: var(--color-bg);
   border: none;
   padding: 0.75rem 2rem;
   border-radius: var(--radius);
@@ -374,7 +375,7 @@ body {
 .region-verse {
   font-family: var(--font-arabic);
   font-size: 0.75rem;
-  color: #6b6380;
+  color: var(--color-text-verse);
   margin-top: 2rem;
   direction: rtl;
 }
@@ -475,7 +476,7 @@ body {
 .prayer-hijri {
   font-family: var(--font-arabic);
   font-size: 0.75rem;
-  color: #a098c0;
+  color: var(--color-text-muted);
   direction: rtl;
   margin-bottom: 1.5rem;
 }
@@ -583,7 +584,7 @@ body {
 .prayer-footer {
   font-family: var(--font-arabic);
   font-size: 0.8rem;
-  color: #6b6380;
+  color: var(--color-text-verse);
   text-align: center;
   margin-top: auto;
   padding: 1.5rem 0 0.5rem;
@@ -726,7 +727,7 @@ body {
 .timer-verse {
   font-family: var(--font-arabic);
   font-size: 0.8rem;
-  color: #6b6380;
+  color: var(--color-text-verse);
   margin-top: 0.75rem;
   direction: rtl;
   line-height: 1.6;
