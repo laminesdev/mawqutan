@@ -16,11 +16,17 @@ export default function App() {
   const prayers = usePrayerMonitor();
 
   return (
-    <ErrorBoundary>
+    <>
       <TitleBar />
-      {(!region || showSettings) && <RegionSelect />}
-      {region && timer.active && <TimerScreen />}
-      {region && !timer.active && !showSettings && <PrayerTimesScreen prayers={prayers} />}
+      <ErrorBoundary>
+        {(!region || showSettings) && <RegionSelect />}
+      </ErrorBoundary>
+      <ErrorBoundary>
+        {region && timer.active && <TimerScreen />}
+      </ErrorBoundary>
+      <ErrorBoundary>
+        {region && !timer.active && !showSettings && <PrayerTimesScreen prayers={prayers} />}
+      </ErrorBoundary>
       {toast && (
         <div className="toast" onClick={dismissToast}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#d4a843" strokeWidth="2"
@@ -32,6 +38,6 @@ export default function App() {
           </div>
         </div>
       )}
-    </ErrorBoundary>
+    </>
   );
 }
