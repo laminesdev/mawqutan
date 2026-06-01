@@ -35,6 +35,8 @@ interface AppState {
   timer: TimerState;
   activateTimer: (name: string, nameAr: string) => void;
   deactivateTimer: () => void;
+  showSettings: boolean;
+  setShowSettings: (v: boolean) => void;
 }
 
 const defaultTimer: TimerState = {
@@ -50,6 +52,8 @@ const defaultState = {
   setRegion: (_r: RegionConfig) => {},
   activateTimer: (_name: string, _nameAr: string) => {},
   deactivateTimer: () => {},
+  showSettings: false,
+  setShowSettings: (_v: boolean) => {},
 };
 
 export const useStore = create<AppState>()(
@@ -74,6 +78,8 @@ export const useStore = create<AppState>()(
         window.electronAPI?.setTimerActive(false);
         return set({ timer: { ...defaultTimer } });
       },
+      showSettings: false,
+      setShowSettings: (v) => set({ showSettings: v }),
     }),
     {
       name: 'mawqutan-settings',
