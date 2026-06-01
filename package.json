@@ -6,7 +6,7 @@
   "scripts": {
     "build": "vite build && tsc -p tsconfig.electron.json",
     "start": "electron . --no-sandbox",
-    "dev": "MAWQUTAN_DEV=true vite & vite build && tsc -p tsconfig.electron.json && MAWQUTAN_DEV=true electron . --no-sandbox",
+    "dev": "MAWQUTAN_DEV=true vite & tsc -p tsconfig.electron.json && MAWQUTAN_DEV=true electron . --no-sandbox",
     "pack": "electron-builder --linux AppImage"
   },
   "dependencies": {
