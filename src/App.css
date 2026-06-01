@@ -327,6 +327,11 @@ body {
   font-family: 'Noto Naskh Arabic', serif;
 }
 
+.region-start-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .region-start-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 20px rgba(212, 168, 67, 0.3);

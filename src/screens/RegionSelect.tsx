@@ -90,6 +90,7 @@ export default function RegionSelect() {
   const [mode, setMode] = useState<'city' | 'custom'>('city');
   const [search, setSearch] = useState('');
   const [selectedIdx, setSelectedIdx] = useState('15'); // default: Algiers
+  const [starting, setStarting] = useState(false);
   const [customLat, setCustomLat] = useState('');
   const [customLng, setCustomLng] = useState('');
   const [method, setMethod] = useState('MWL');
@@ -101,6 +102,7 @@ export default function RegionSelect() {
   }, [search]);
 
   const handleStart = () => {
+    if (starting) return;
     let lat: number, lng: number, name: string;
     if (mode === 'city') {
       const city = CITIES[parseInt(selectedIdx)];
@@ -114,8 +116,12 @@ export default function RegionSelect() {
       name = `${lat}, ${lng}`;
     }
     if (isNaN(lat) || isNaN(lng)) return;
-    setRegion({ cityName: name, latitude: lat, longitude: lng, calculationMethod: method });
-    setShowSettings(false);
+    setStarting(true);
+    // Slight delay for visual feedback
+    setTimeout(() => {
+      setRegion({ cityName: name, latitude: lat, longitude: lng, calculationMethod: method });
+      setShowSettings(false);
+    }, 200);
   };
 
   return (
@@ -200,8 +206,8 @@ export default function RegionSelect() {
             ))}
           </select>
 
-          <button className="region-start-btn" onClick={handleStart}>
-            ابدأ
+          <button className="region-start-btn" onClick={handleStart} disabled={starting}>
+            {starting ? 'جاري…' : 'ابدأ'}
           </button>
         </div>
 
