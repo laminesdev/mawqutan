@@ -8,6 +8,7 @@ let win: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let isQuitting = false;
 let isTimerActive = false;
+let prevBounds: Electron.Rectangle | null = null;
 
 function createWindow() {
   win = new BrowserWindow({
@@ -44,6 +45,14 @@ function createWindow() {
       win?.hide();
     }
   });
+
+  // Restore window bounds after leaving fullscreen
+  win.on('leave-full-screen', () => {
+    if (prevBounds && !isTimerActive) {
+      win?.setBounds(prevBounds);
+      prevBounds = null;
+    }
+  });
 }
 
 function createTray() {
@@ -61,7 +70,9 @@ function createTray() {
     },
     {
       label: 'تصغير / Hide',
-      click: () => win?.hide(),
+      click: () => {
+        if (!isTimerActive) win?.hide();
+      },
     },
     { type: 'separator' },
     {
@@ -125,7 +136,9 @@ function showPrayerNotification(prayerNameAr: string): void {
 // ── IPC Handlers ──
 
 ipcMain.on(IPC.MINIMIZE, (event) => {
-  BrowserWindow.fromWebContents(event.sender)?.hide();
+  if (!isTimerActive) {
+    BrowserWindow.fromWebContents(event.sender)?.hide();
+  }
 });
 
 ipcMain.on(IPC.CLOSE, (event) => {
@@ -144,10 +157,18 @@ ipcMain.on(IPC.QUIT, () => {
 ipcMain.on(IPC.SET_TIMER_ACTIVE, (_event, active: boolean) => {
   isTimerActive = active;
   if (active && win) {
+    // Save current bounds before going fullscreen
+    prevBounds = win.getBounds();
     win.show();
     win.focus();
+    win.setFullScreen(true);
+    win.setResizable(false);
+    win.setMovable(false);
     win.setAlwaysOnTop(true, 'screen-saver');
   } else if (!active && win) {
+    win.setFullScreen(false);
+    win.setResizable(true);
+    win.setMovable(true);
     win.setAlwaysOnTop(false);
   }
 });
