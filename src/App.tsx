@@ -5,6 +5,7 @@ import { getCalcMethod, PRAYER_ORDER, PRAYER_NAMES_AR, PrayerInfo, CALC_METHOD_N
 import RegionSelect from './screens/RegionSelect';
 import PrayerTimesScreen from './screens/PrayerTimes';
 import TimerScreen from './screens/Timer';
+import ErrorBoundary from './components/ErrorBoundary';
 
 declare global {
   interface Window {
@@ -80,11 +81,11 @@ export default function App() {
   }, [prayers, timer.active, activateTimer]);
 
   return (
-    <>
+    <ErrorBoundary>
       <TitleBar />
       {!region && <RegionSelect />}
       {region && timer.active && <TimerScreen />}
       {region && !timer.active && <PrayerTimesScreen prayers={prayers} />}
-    </>
+    </ErrorBoundary>
   );
 }
