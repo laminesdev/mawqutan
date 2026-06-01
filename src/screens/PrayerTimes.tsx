@@ -108,8 +108,8 @@ export default function PrayerTimes({ prayers }: Props) {
         <div className="flex justify-center items-center gap-3">
           <div className="relative flex items-center justify-center">
             <svg viewBox="0 0 48 48" width="48" height="48" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(212,168,67,0.15)" strokeWidth="2"/>
-              <circle cx="24" cy="24" r="20" fill="none" stroke="#d4a843" strokeWidth="2"
+              <circle cx="24" cy="24" r="20" fill="none" className="stroke-accent/20" strokeWidth="2"/>
+              <circle cx="24" cy="24" r="20" fill="none" className="stroke-accent" strokeWidth="2"
                 strokeLinecap="round" strokeDasharray="125.6"
                 strokeDashoffset="0" transform="rotate(-90 24 24)"/>
             </svg>

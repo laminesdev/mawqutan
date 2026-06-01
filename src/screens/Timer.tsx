@@ -140,6 +140,13 @@ export default function Timer() {
         <p className="font-arabic text-[0.8rem] text-text-verse mt-3 leading-[1.6] max-w-[300px] mx-auto [direction:rtl]">
           ﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾
         </p>
+
+        <button
+          onClick={deactivateTimer}
+          className="mt-6 text-xs font-arabic text-text-muted hover:text-text-secondary transition-colors duration-200 cursor-pointer bg-transparent border-none"
+        >
+          تخطي ←
+        </button>
       </div>
     </div>
   );

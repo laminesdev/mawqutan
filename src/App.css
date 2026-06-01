@@ -141,6 +141,11 @@ img {
   100% { transform: scale(1) rotate(6deg); }
 }
 
+@keyframes shrink {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
 /* ============ SCROLLBAR ============ */
 ::-webkit-scrollbar {
   width: 3px;
