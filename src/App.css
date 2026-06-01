@@ -71,6 +71,12 @@ body {
   user-select: none;
 }
 
+/* ============ SELECTION ============ */
+::selection {
+  background: rgba(212, 168, 67, 0.3);
+  color: #e8e0d0;
+}
+
 /* ============ TITLE BAR ============ */
 
 .title-bar {
