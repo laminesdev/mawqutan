@@ -331,8 +331,16 @@ body {
 
 .prayer-date {
   font-family: 'Noto Naskh Arabic', serif;
-  font-size: 0.95rem;
-  color: #6b6580;
+  font-size: 0.9rem;
+  color: #8b83a0;
+  direction: rtl;
+}
+
+.prayer-hijri {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 0.75rem;
+  color: #6b6390;
+  direction: rtl;
   margin-bottom: 1.5rem;
 }
 

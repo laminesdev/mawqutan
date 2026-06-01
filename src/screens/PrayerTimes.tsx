@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { PrayerInfo } from '../utils/prayerTimes';
+import { getHijriDate } from '../utils/hijri';
 
 function toEasternArabic(n: number): string {
   const d = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -51,6 +52,8 @@ export default function PrayerTimes({ prayers }: Props) {
   const h12 = h % 12 || 12;
   const timeStr = `${toEasternArabic(h12)}:${toEasternArabic(m)}`;
   const dateStr = `${DOW[dt.getDay()]}، ${dt.getDate()} ${MONTHS[dt.getMonth()]}`;
+  const hijri = getHijriDate();
+  const hijriStr = `${toEasternArabic(hijri.day)} ${hijri.month} ${toEasternArabic(hijri.year)}ﻫ`;
 
   // determine current & next
   let currentIdx = -1;
@@ -69,6 +72,7 @@ export default function PrayerTimes({ prayers }: Props) {
         <div className="prayer-ampm">{ampm}</div>
       </div>
       <div className="prayer-date">{dateStr}</div>
+      <div className="prayer-hijri">{hijriStr}</div>
 
       {/* Next prayer card */}
       <div className="prayer-next-card">
