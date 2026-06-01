@@ -131,7 +131,7 @@ export default function PrayerTimes({ prayers }: Props) {
           return (
             <div key={p.key} className={cls}>
               <span className="font-arabic text-lg text-text-primary">{p.nameAr}</span>
-              <span className={`text-base tracking-wide ${isCurrent ? 'text-accent [text-shadow:0_0_20px_rgba(212,168,67,0.3)]' : 'text-[#b0a8c0]'}`}>
+              <span className={`text-base tracking-wide ${isCurrent ? 'text-accent [text-shadow:0_0_20px_rgba(212,168,67,0.3)]' : 'text-row-time'}`}>
                 {formatTime12(p.time)}
               </span>
             </div>

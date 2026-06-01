@@ -23,6 +23,7 @@ export default {
         border: 'rgba(232, 224, 208, 0.1)',
         placeholder: '#7a7390',
         'toast-bg': 'rgba(17, 21, 51, 0.95)',
+        'row-time': '#b0a8c0',
       },
       fontFamily: {
         arabic: ['Noto Naskh Arabic', 'serif'],
