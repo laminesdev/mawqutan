@@ -507,6 +507,18 @@ body {
   gap: 0.75rem;
 }
 
+.prayer-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prayer-ring svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .prayer-next-name {
   font-family: var(--font-arabic);
   font-size: 1.5rem;

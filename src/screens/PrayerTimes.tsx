@@ -105,7 +105,15 @@ export default function PrayerTimes({ prayers }: Props) {
           {isNextToday ? 'الصلاة القادمة' : 'الصلاة القادمة — غداً'}
         </div>
         <div className="prayer-next-content">
-          <span className="prayer-next-name">{nextPrayer.nameAr}</span>
+          <div className="prayer-ring">
+            <svg viewBox="0 0 48 48" width="48" height="48">
+              <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(212,168,67,0.15)" strokeWidth="2"/>
+              <circle cx="24" cy="24" r="20" fill="none" stroke="#d4a843" strokeWidth="2"
+                strokeLinecap="round" strokeDasharray="125.6"
+                strokeDashoffset="0" transform="rotate(-90 24 24)"/>
+            </svg>
+            <span className="prayer-next-name">{nextPrayer.nameAr}</span>
+          </div>
           <span className="prayer-next-time">{formatTime12(nextPrayer.time)}</span>
         </div>
         <div className="prayer-next-remaining">{minutesUntil(nextPrayer.time)}</div>
